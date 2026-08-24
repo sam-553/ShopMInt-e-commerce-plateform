@@ -5,10 +5,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../Navbar/page.jsx";
-import Checkoutpath from "../checkoutPath/page.jsx";
-import Footer from "../Footer/page.jsx";
 
-const API_URL = "http://localhost:5000/api/payment";
+import Footer from "../Footer/page.jsx";
+import CheckoutPath from "../checkoutPath/page.jsx";
+
+const API_URL = `${import.meta.env.VITE_BASE_URL}/api/payment`;
 
 const AddPayment = () => {
   const navigate = useNavigate();
@@ -309,7 +310,7 @@ const AddPayment = () => {
       <Navbar />
 
       <main className="container mx-auto px-4 py-10 mt-16 max-w-2xl">
-        <Checkoutpath activepath={2} />
+        <CheckoutPath activepath={2} />
 
         <h1 className="text-3xl md:text-4xl font-extrabold text-center mb-8 text-gray-800">
           Payment

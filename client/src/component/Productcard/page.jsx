@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Rating from '../Rating/page.jsx';
 
 
-const ProductCard = ({ product }) => {
+const Productcard = ({ product }) => {
 
   const [rating, setRating] = useState(product?.ratings ?? 0);
 
@@ -88,4 +88,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default Productcard;

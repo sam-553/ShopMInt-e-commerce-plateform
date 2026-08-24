@@ -19,6 +19,7 @@ import {
 } from "../../redux/features/admin/adminSlice";
 import productCategory from "../Category/page.jsx";
 
+
 const UploadProduct = () => {
   const dispatch = useDispatch();
 

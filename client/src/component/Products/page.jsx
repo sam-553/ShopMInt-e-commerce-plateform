@@ -5,13 +5,15 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { getproduct } from "../../redux/features/products/productSlice";
 
-import productCategory from "../category/page.jsx";
+
 import Navbar from "../Navbar/page.jsx";
 import Loader from "../Loader/page.jsx";
-import ProductCard from "../ProductCard/page.jsx";
+
 import NoProductFound from "../noproduct/page.jsx";
 import Footer from "../Footer/page.jsx";
 import Pagination from "../Pagination/page.jsx";
+import productCategory from "../Category/page.jsx";
+import Productcard from "../Productcard/page.jsx";
 
 const ProductsContent = () => {
     const dispatch = useDispatch();
@@ -284,7 +286,7 @@ const ProductsContent = () => {
 
                             /* Products */
                             product.map((item) => (
-                                <ProductCard
+                                <Productcard
                                     product={item}
                                     key={item._id}
                                 />

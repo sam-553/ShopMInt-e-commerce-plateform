@@ -6,7 +6,8 @@ import { useSelector } from 'react-redux';
 import Navbar from '../Navbar/page.jsx';
 
 import Footer from '../Footer/page.jsx';
-import Checkoutpath from '../checkoutPath/page.jsx';
+
+import CheckoutPath from '../checkoutPath/page.jsx';
 
 const ConfirmOrder = () => {
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
@@ -41,7 +42,7 @@ const ConfirmOrder = () => {
     <>
       <Navbar />
       <main className="container mx-auto px-4 py-10 mt-16 max-w-3xl">
-        <Checkoutpath activepath={1} />
+        <CheckoutPath activepath={1} />
         <h1 className="text-3xl md:text-4xl font-extrabold text-center mb-10 text-gray-800">
           Confirm Your Order
         </h1>

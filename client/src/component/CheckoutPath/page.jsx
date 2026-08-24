@@ -3,7 +3,7 @@
 import { AccountBalance, LibraryAddCheck, LocalShipping } from '@mui/icons-material';
 import React from 'react';
 
-const Checkoutpath = ({ activepath }) => {
+const CheckoutPath = ({ activepath }) => {
     const path = [
         { label: 'Shipping', icon: <LocalShipping /> },
         { label: 'Confirm Order', icon: <LibraryAddCheck /> },
@@ -55,4 +55,4 @@ const Checkoutpath = ({ activepath }) => {
     );
 };
 
-export default Checkoutpath;
+export default CheckoutPath;

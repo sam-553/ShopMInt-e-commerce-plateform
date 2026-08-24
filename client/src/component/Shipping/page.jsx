@@ -7,7 +7,8 @@ import { saveShippingInfo } from "../../redux/features/cart/cartSlice";
 import Navbar from "../Navbar/page.jsx";
 
 import Footer from "../Footer/page.jsx";
-import Checkoutpath from "../checkoutPath/page.jsx";
+import CheckoutPath from "../checkoutPath/page.jsx";
+
 
 const INDIA_STATES = {
   "Andhra Pradesh": [
@@ -344,7 +345,7 @@ const Shipping = () => {
       <Navbar />
 
       <main className="container mx-auto px-4 py-10 mt-12 max-w-4xl">
-        <Checkoutpath activepath={0} />
+        <CheckoutPath activepath={0} />
 
         <h1 className="text-3xl font-extrabold text-center mb-8 text-gray-800">
           Shipping Details

@@ -6,7 +6,7 @@ import Banner from "../../component/Banner/page.jsx";
 import Footer from "../../component/Footer/page.jsx";
 import Navbar from "../../component/Navbar/page.jsx";
 import Loader from "../../component/Loader/page.jsx";
-import ProductCard from "../../component/ProductCard/page.jsx";
+import ProductCard from "../../component/Productcard/page.jsx";
 
 
 const Home = () => {

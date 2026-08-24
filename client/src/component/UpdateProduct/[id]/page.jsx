@@ -18,6 +18,7 @@ import {
 import { getproductDetails } from "../../../redux/features/products/productSlice";
 import productCategory from "../../Category/page.jsx";
 
+
 const UpdateProduct = () => {
   const navigate = useNavigate();
   const { id: productId } = useParams();
