@@ -9,11 +9,12 @@ import { getproduct } from "../../redux/features/products/productSlice";
 import Navbar from "../Navbar/page.jsx";
 import Loader from "../Loader/page.jsx";
 
-import NoProductFound from "../noproduct/page.jsx";
+
 import Footer from "../Footer/page.jsx";
 import Pagination from "../Pagination/page.jsx";
 import productCategory from "../Category/page.jsx";
 import Productcard from "../Productcard/page.jsx";
+import Noproduct from "../Noproduct/page.jsx";
 
 const ProductsContent = () => {
     const dispatch = useDispatch();
@@ -296,7 +297,7 @@ const ProductsContent = () => {
 
                             /* No Products */
                             <div className="col-span-full text-center text-gray-600">
-                                <NoProductFound
+                                <Noproduct
                                     keyword={keyword}
                                 />
                             </div>

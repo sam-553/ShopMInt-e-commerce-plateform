@@ -96,7 +96,7 @@ const App = () => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        {/* Public Routes */}
+       
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Search } from 'lucide-react';
 
-const NoProductFound = ({ keyword }) => {
+const Noproduct = ({ keyword }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[300px] py-10 text-center">
       <Search className="w-16 h-16 text-gray-400 mb-4" />
@@ -17,4 +17,4 @@ const NoProductFound = ({ keyword }) => {
   );
 };
 
-export default NoProductFound;
+export default Noproduct;

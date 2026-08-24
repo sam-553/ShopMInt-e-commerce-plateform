@@ -7,7 +7,9 @@ import { saveShippingInfo } from "../../redux/features/cart/cartSlice";
 import Navbar from "../Navbar/page.jsx";
 
 import Footer from "../Footer/page.jsx";
-import CheckoutPath from "../checkoutPath/page.jsx";
+import CheckoutPath from "../CheckoutPath/page.jsx";
+
+
 
 
 const INDIA_STATES = {

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/page.jsx";
 
 import Footer from "../Footer/page.jsx";
-import CheckoutPath from "../checkoutPath/page.jsx";
+import CheckoutPath from "../CheckoutPath/page.jsx";
 
 const API_URL = `${import.meta.env.VITE_BASE_URL}/api/payment`;
 
