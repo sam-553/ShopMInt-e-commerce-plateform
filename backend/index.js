@@ -27,12 +27,15 @@ const port = process.env.PORT || 5000;
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "https://shopmint-client.vercel.app",
   
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
+      // Allow requests without an origin
+      // such as Postman/server-to-server requests
       if (!origin) {
         return callback(null, true);
       }
@@ -43,25 +46,13 @@ app.use(
 
       return callback(new Error("Not allowed by CORS"));
     },
-
     credentials: true,
-
-    methods: [
-      "GET",
-      "POST",
-      "PUT",
-      "DELETE",
-      "PATCH",
-      "OPTIONS",
-    ],
-
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-    ],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
+app.options("*", cors());
 app.use(cookieParser());
 
 app.use(
@@ -112,6 +103,12 @@ app.use("/api/payment", paymentrouter);
 
 app.use(HandleErrorMiddleware);
 
-app.listen(port, () => {
-  console.log(`✅ Server running on port ${port}`);
-});
+
+
+if (process.env.NODE_ENV !== "production") {
+  const port = process.env.PORT || 5000;
+
+  app.listen(port, () => {
+    console.log(`✅ Server running on port ${port}`);
+  });
+}
