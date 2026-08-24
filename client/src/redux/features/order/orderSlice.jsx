@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 // Axios base config
-axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}/api`;
+axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}`;
 axios.defaults.withCredentials = true;
 
 // ✅ Create Order Thunk
@@ -11,7 +11,7 @@ export const createNewOrder = createAsyncThunk(
     "order/createOrder",
     async (order, { rejectWithValue }) => {
         try {
-            const response = await axios.post("/order/createOrder", order);
+            const response = await axios.post("/api/order/createOrder", order);
             return response.data;
         } catch (error) {
             return rejectWithValue(
@@ -26,7 +26,7 @@ export const getAllMyOrders = createAsyncThunk(
     "order/getAllMyOrders",
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axios.get("/order/allMyOrders");
+            const response = await axios.get("/api/order/allMyOrders");
             return response.data;
         } catch (error) {
             return rejectWithValue(
@@ -41,7 +41,7 @@ export const getSingleOrder = createAsyncThunk(
     "order/getSingleOrder",
     async (id, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`/order/getSingleOrder/${id}`);
+            const response = await axios.get(`/api/order/getSingleOrder/${id}`);
             return response.data;
         } catch (error) {
             return rejectWithValue(

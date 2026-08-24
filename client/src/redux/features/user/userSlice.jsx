@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API = `${import.meta.env.VITE_BASE_URL}/api`;
+const API = `${import.meta.env.VITE_BASE_URL}`;
 
 const api = axios.create({
   baseURL: API,
@@ -23,7 +23,7 @@ export const register = createAsyncThunk(
   async (userdata, { rejectWithValue }) => {
     try {
       const response = await api.post(
-        "/user/registerUser",
+        "/api/user/registerUser",
         userdata
       );
 
@@ -42,7 +42,7 @@ export const login = createAsyncThunk(
   async (userdata, { rejectWithValue }) => {
     try {
       const response = await api.post(
-        "/user/loginUser",
+        "/api/user/loginUser",
         userdata
       );
 
@@ -61,7 +61,7 @@ export const loadUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get(
-        "/user/getuserDetails"
+        "/api/user/getuserDetails"
       );
 
       return response.data;
@@ -79,7 +79,7 @@ export const logout = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.post(
-        "/user/logout"
+        "/api/user/logout"
       );
 
       return response.data;
@@ -97,7 +97,7 @@ export const updateUser = createAsyncThunk(
   async (userdata, { rejectWithValue }) => {
     try {
       const response = await api.put(
-        "/user/updateProfile",
+        "/api/user/updateProfile",
         userdata
       );
 
@@ -135,7 +135,7 @@ export const updatePassword = createAsyncThunk(
   async (userdata, { rejectWithValue }) => {
     try {
       const response = await api.put(
-        "/user/updatePassword",
+        "/api/user/updatePassword",
         userdata
       );
 
@@ -157,7 +157,7 @@ export const resetPassword = createAsyncThunk(
   ) => {
     try {
       const response = await api.put(
-        `/user/resetPassword/${token}`,
+        `/api/user/resetPassword/${token}`,
         {
           password,
           confirmPassword,
@@ -294,9 +294,7 @@ const userSlice = createSlice({
         state.user = null;
       })
 
-      // =========================
-      // LOGOUT
-      // =========================
+      
       .addCase(logout.pending, pending)
 
       .addCase(logout.fulfilled, (state) => {

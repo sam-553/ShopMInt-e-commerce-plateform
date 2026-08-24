@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Axios config
-axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}/api`;
+axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}`;
 axios.defaults.withCredentials = true;
 
 
@@ -15,7 +15,7 @@ export const fetchAdminProducts = createAsyncThunk(
     'admin/fetchAdminProducts',
     async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get('/product/getAdminProducts');
+            const { data } = await axios.get('/api/product/getAdminProducts');
             return data; // should return { success, products }
         } catch (error) {
             return rejectWithValue(extractError(error, "Failed to fetch products"));
@@ -26,7 +26,7 @@ export const uploadProducts = createAsyncThunk(
     'admin/uploadProducts',
     async (productData, { rejectWithValue }) => {
         try {
-            const { data } = await axios.post('/product/addproduct', productData);
+            const { data } = await axios.post('/api/product/addproduct', productData);
             return data;
         } catch (error) {
             return rejectWithValue(extractError(error, "Failed to fetch products"));
@@ -39,7 +39,7 @@ export const deleteProduct = createAsyncThunk(
     'admin/deleteProduct',
     async (id, { rejectWithValue }) => {
         try {
-            const { data } = await axios.delete(`/product/deleteproduct/${id}`);
+            const { data } = await axios.delete(`/api/product/deleteproduct/${id}`);
             return data; // should return { success, products }
         } catch (error) {
             return rejectWithValue(extractError(error, "Failed to delete products"));
@@ -52,7 +52,7 @@ export const updateProduct = createAsyncThunk(
     'admin/updateProduct',
     async ({ id, formData }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`/product/updateproduct/${id}`, formData);
+            const { data } = await axios.put(`/api/product/updateproduct/${id}`, formData);
             return data; // should return { success, products }
         } catch (error) {
             return rejectWithValue(extractError(error, "Failed to update products"));
@@ -65,7 +65,7 @@ export const fetchAllUsers = createAsyncThunk(
     'admin/fetchAllUsers',
     async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get('/user/getUsersList');
+            const { data } = await axios.get('/api/user/getUsersList');
             return data; // should return { success, products }
         } catch (error) {
             return rejectWithValue(extractError(error, "Failed to fetch Users"));
@@ -78,7 +78,7 @@ export const deleteuser = createAsyncThunk(
     'admin/deleteuser',
     async (id, { rejectWithValue }) => {
         try {
-            const { data } = await axios.delete(`/user/deleteUser/${id}`);
+            const { data } = await axios.delete(`/api/user/deleteUser/${id}`);
             return data; // should return { success, products }
         } catch (error) {
             return rejectWithValue(extractError(error, "Failed to delete user"));
@@ -91,7 +91,7 @@ export const getSingleUser = createAsyncThunk(
     'admin/getSingleUser',
     async (id, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/user/getSingleUser/${id}`);
+            const { data } = await axios.get(`/api/user/getSingleUser/${id}`);
             return data; // should return { success, products }
         } catch (error) {
             return rejectWithValue(extractError(error, "Failed to fetch getSingleUser"));
@@ -105,7 +105,7 @@ export const updateUserRole = createAsyncThunk(
     'admin/updateUserRole',
     async ({ id, formData }, { rejectWithValue }) => {
         try {
-            const { data } = await axios.put(`/user/updateUserRole/${id}`, formData);
+            const { data } = await axios.put(`/api/user/updateUserRole/${id}`, formData);
             return data; // should return { success, products }
         } catch (error) {
             return rejectWithValue(extractError(error, "Failed to update user"));
@@ -118,7 +118,7 @@ export const fetchAllOrders = createAsyncThunk(
     'admin/fetchAllOrders',
     async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get('/order/getAllOrders');
+            const { data } = await axios.get('/api/order/getAllOrders');
             return data; // should return { success, products }
         } catch (error) {
             return rejectWithValue((error.response?.data?.message || error.message || "Failed to fetch order"));
@@ -130,7 +130,7 @@ export const updateOrderStatus = createAsyncThunk(
     'admin/updateOrderStatus',
     async ({ orderId, status }, thunkAPI) => {
         try {
-            const { data } = await axios.put(`/order/updateOrderStatus/${orderId}`, { status });
+            const { data } = await axios.put(`/api/order/updateOrderStatus/${orderId}`, { status });
             return data;
         } catch (error) {
             return thunkAPI.rejectWithValue(error.response.data.message || 'Error updating order');
@@ -143,7 +143,7 @@ export const deleteOrder = createAsyncThunk(
     'admin/deleteOrder',
     async (id, { rejectWithValue }) => {
         try {
-            const { data } = await axios.delete(`/order/deleteOrder/${id}`);
+            const { data } = await axios.delete(`/api/order/deleteOrder/${id}`);
             return data; // should return { success, products }
         } catch (error) {
             return rejectWithValue((error.response?.data?.message || error.message || "Failed to delete order"));
@@ -156,7 +156,7 @@ export const fetchAllReviews = createAsyncThunk(
     'admin/fetchAllReviews',
     async (_, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get('/product/getProductReviews');
+            const { data } = await axios.get('/api/product/getProductReviews');
             return data; // should return { success, products }
         } catch (error) {
             return rejectWithValue((error.response?.data?.message || error.message || "Failed to fetch reviews"));
@@ -167,7 +167,7 @@ export const deleteReviews = createAsyncThunk(
     'admin/deleteReviews',
     async ({ productId, reviewId }, { rejectWithValue }) => {
         try {
-            await axios.delete(`/product/deleteReview/${productId}/${reviewId}`);
+            await axios.delete(`/api/product/deleteReview/${productId}/${reviewId}`);
 
 
             return data; // should return { success, products }
@@ -180,7 +180,7 @@ export const fetchSingleProductReviews = createAsyncThunk(
     'admin/fetchSingleProductReviews',
     async (productId, { rejectWithValue }) => {
         try {
-            const { data } = await axios.get(`/product/getSingleProductReviews/${productId}`);
+            const { data } = await axios.get(`/api/product/getSingleProductReviews/${productId}`);
             return data; // { success, reviews }
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || error.message || "Failed to fetch product reviews");

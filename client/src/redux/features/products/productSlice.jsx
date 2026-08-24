@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const BASE_URL =
-  `${import.meta.env.VITE_BASE_URL}/api/product`;
+  `${import.meta.env.VITE_BASE_URL}`;
 
 export const getproduct = createAsyncThunk(
   "product/getproduct",
@@ -38,7 +38,7 @@ export const getproduct = createAsyncThunk(
 
       const { data } =
         await axios.get(
-          `${BASE_URL}/getAllProduct?${params.toString()}`
+          `${BASE_URL}/api/product/getAllProduct?${params.toString()}`
         );
 
       return data;
@@ -54,7 +54,7 @@ export const getproduct = createAsyncThunk(
 );
 
 export const getproductDetails =
-  createAsyncThunk(
+  createAsyncThunk( 
     "product/getproductDetails",
 
     async (id, { rejectWithValue }) => {
@@ -63,7 +63,7 @@ export const getproductDetails =
 
         const { data } =
           await axios.get(
-            `${BASE_URL}/getproductdetails/${id}`
+            `${BASE_URL}/api/product/getproductdetails/${id}`
           );
 
         return data;
@@ -91,7 +91,7 @@ export const createReview =
 
         const { data } =
           await axios.put(
-            `${BASE_URL}/createReviewForProduct`,
+            `${BASE_URL}/api/product/createReviewForProduct`,
             {
               rating,
               comment,

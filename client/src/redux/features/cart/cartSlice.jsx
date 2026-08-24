@@ -6,7 +6,7 @@ import {
 import axios from "axios";
 
 axios.defaults.baseURL =
-  `${import.meta.env.VITE_BASE_URL}/api`;
+  `${import.meta.env.VITE_BASE_URL}`;
 
 axios.defaults.withCredentials = true;
 
@@ -23,7 +23,7 @@ export const addtoCart =
 
         const { data } =
           await axios.get(
-            `/product/getproductdetails/${id}`
+            `/api/product/getproductdetails/${id}`
           );
 
         const product =
