@@ -38,7 +38,7 @@ export const getproduct = createAsyncThunk(
 
       const { data } =
         await axios.get(
-          `${BASE_URL}/api/product/getAllProduct?${params.toString()}`
+          `${BASE_URL}api/product/getAllProduct?${params.toString()}`
         );
 
       return data;
@@ -63,7 +63,7 @@ export const getproductDetails =
 
         const { data } =
           await axios.get(
-            `${BASE_URL}/api/product/getproductdetails/${id}`
+            `${BASE_URL}api/product/getproductdetails/${id}`
           );
 
         return data;
@@ -91,7 +91,7 @@ export const createReview =
 
         const { data } =
           await axios.put(
-            `${BASE_URL}/api/product/createReviewForProduct`,
+            `${BASE_URL}api/product/createReviewForProduct`,
             {
               rating,
               comment,
