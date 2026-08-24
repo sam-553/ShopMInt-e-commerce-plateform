@@ -9,8 +9,6 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import cloudinaryModule from "cloudinary";
-
-// Local imports
 import connectDb from "./config/connection.js";
 import productrouter from "./routes/productRoutes.js";
 import userrouter from "./routes/userRoutes.js";
@@ -18,27 +16,23 @@ import orderrouter from "./routes/orderRoutes.js";
 import paymentrouter from "./routes/paymentRoutes.js";
 import HandleErrorMiddleware from "./middlewear/error.js";
 
-// Connect Database
+
 connectDb();
 
 const app = express();
 
 const port = process.env.PORT || 5000;
 
-// ===============================
-// CORS CONFIGURATION
-// ===============================
+
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://shopmint2-ebon.vercel.app",
+  
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests without origin
-      // Example: Postman, server-to-server requests
       if (!origin) {
         return callback(null, true);
       }
@@ -68,10 +62,6 @@ app.use(
   })
 );
 
-// ===============================
-// MIDDLEWARE
-// ===============================
-
 app.use(cookieParser());
 
 app.use(
@@ -96,10 +86,6 @@ app.use(
   })
 );
 
-// ===============================
-// CLOUDINARY
-// ===============================
-
 const cloudinary = cloudinaryModule.v2;
 
 cloudinary.config({
@@ -108,20 +94,12 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-// ===============================
-// HOME ROUTE
-// ===============================
-
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
     message: "Backend API is running",
   });
 });
-
-// ===============================
-// API ROUTES
-// ===============================
 
 app.use("/api/product", productrouter);
 
@@ -131,15 +109,8 @@ app.use("/api/order", orderrouter);
 
 app.use("/api/payment", paymentrouter);
 
-// ===============================
-// ERROR HANDLER
-// ===============================
 
 app.use(HandleErrorMiddleware);
-
-// ===============================
-// START SERVER
-// ===============================
 
 app.listen(port, () => {
   console.log(`✅ Server running on port ${port}`);
