@@ -5,9 +5,9 @@ import { Routes, Route } from "react-router-dom";
 import Loader from "./component/Loader/page.jsx";
 
 // Lazy load pages/components
-const Home = lazy(() => import("./page.jsxs/Home/page.jsx"));
-const Login = lazy(() => import("./page.jsxs/Login/page.jsx"));
-const Signup = lazy(() => import("./page.jsxs/Signup/page.jsx"));
+const Home = lazy(() => import("./pages/Home/page.jsx"));
+const Login = lazy(() => import("./pages/Login/page.jsx"));
+const Signup = lazy(() => import("./pages/Signup/page.jsx"));
 
 const UserProfile = lazy(() => import("./component/UserProfile/page.jsx"));
 const UpdatePassword = lazy(() => import("./component/UpdatePassword/page.jsx"));
