@@ -103,7 +103,7 @@ const PaymentSuccess = () => {
                 <Loader />
             ) : (
                 <main className="flex flex-col items-center justify-center min-h-[80vh] py-12 px-4 bg-gradient-to-b from-green-50 via-white to-white relative overflow-hidden mt-10">
-                    <div className="absolute inset-0 bg-[url('/confetti.svg')] bg-repeat opacity-10 pointer-events-none animate-fadeIn"></div>
+                    <div className="absolute inset-0  bg-repeat opacity-10 pointer-events-none animate-fadeIn"></div>
                     <div className="bg-white p-8 rounded-3xl shadow-2xl max-w-md w-full text-center border border-gray-100 animate-fadeIn">
                         <div className="flex justify-center mb-4 animate-bounce">
                             <CheckCircle className="text-green-500" size={72} />
