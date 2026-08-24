@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import Navbar from "../../Navbar/page.jsx";
 import Loader from "../../Loader/page.jsx";
 import Footer from "../../Footer/page.jsx";
-import productCategory from "../../category/page.jsx";
+
 
 import {
   updateProduct,
@@ -16,6 +16,7 @@ import {
 } from "../../../redux/features/admin/adminSlice";
 
 import { getproductDetails } from "../../../redux/features/products/productSlice";
+import productCategory from "../../Category/page.jsx";
 
 const UpdateProduct = () => {
   const navigate = useNavigate();

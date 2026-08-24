@@ -4,8 +4,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Navbar from '../Navbar/page.jsx';
-import Checkoutpath from '../checkoutPath/page.jsx';
+
 import Footer from '../Footer/page.jsx';
+import Checkoutpath from '../checkoutPath/page.jsx';
 
 const ConfirmOrder = () => {
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);

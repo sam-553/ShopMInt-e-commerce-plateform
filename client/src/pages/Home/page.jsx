@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-
 import { getproduct } from "../../redux/features/products/productSlice";
-
 import Banner from "../../component/Banner/page.jsx";
-
 import Footer from "../../component/Footer/page.jsx";
 import Navbar from "../../component/Navbar/page.jsx";
 import Loader from "../../component/Loader/page.jsx";
-import ProductCard from "../../component/ProductCard/page.jsx";
+import ProductCard from "../../component/ProductCard/page";
+
 
 const Home = () => {
   const dispatch = useDispatch();

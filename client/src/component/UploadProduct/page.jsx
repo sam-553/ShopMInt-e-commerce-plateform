@@ -10,13 +10,14 @@ import { toast } from "react-toastify";
 import Navbar from "../Navbar/page.jsx";
 import Loader from "../Loader/page.jsx";
 import Footer from "../Footer/page.jsx";
-import productCategory from "../category/page.jsx";
+
 
 import {
   removeError,
   removeSuccess,
   uploadProducts,
 } from "../../redux/features/admin/adminSlice";
+import productCategory from "../Category/page.jsx";
 
 const UploadProduct = () => {
   const dispatch = useDispatch();
