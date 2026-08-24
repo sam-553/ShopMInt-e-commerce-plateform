@@ -7,7 +7,7 @@ import { verifyUserAuth } from '../middlewear/userAuth.js';
 const router = express.Router();
 
 router.post('/processPayment', verifyUserAuth, processPayment);
-router.get('/getKey', verifyUserAuth, sendApiKey);
+router.get('/getKey',  sendApiKey);
 router.post('/paymentVerification', paymentVerification);
 
 export default router;
