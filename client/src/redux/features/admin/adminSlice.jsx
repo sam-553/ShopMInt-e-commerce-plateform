@@ -4,7 +4,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Axios config
-axios.defaults.baseURL = "http://localhost:5000/api";
+axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}/api`;
 axios.defaults.withCredentials = true;
 
 

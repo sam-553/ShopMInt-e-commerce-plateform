@@ -6,7 +6,7 @@ import {
 import axios from "axios";
 
 axios.defaults.baseURL =
-  "http://localhost:5000/api";
+  `${import.meta.env.VITE_BASE_URL}/api`;
 
 axios.defaults.withCredentials = true;
 

@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 // Axios base config
-axios.defaults.baseURL = "http://localhost:5000/api";
+axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}/api`;
 axios.defaults.withCredentials = true;
 
 // ✅ Create Order Thunk

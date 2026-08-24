@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const BASE_URL =
-  "http://localhost:5000/api/product";
+  `${import.meta.env.VITE_BASE_URL}/api/product`;
 
 export const getproduct = createAsyncThunk(
   "product/getproduct",
