@@ -1,17 +1,29 @@
-// --- utils/sendToken.js ---
 const sendToken = (user, statusCode, res) => {
+
   const token = user.getJWTToken();
 
-  const cookieExpireDays = Number(process.env.EXPIRE_COOKIE) || 7;
+  const cookieExpireDays =
+    Number(process.env.EXPIRE_COOKIE) || 7;
 
   const options = {
-    expires: new Date(Date.now() + cookieExpireDays * 24 * 60 * 60 * 1000),
+    expires: new Date(
+      Date.now() +
+        cookieExpireDays * 24 * 60 * 60 * 1000
+    ),
+
     httpOnly: true,
+
     secure: process.env.NODE_ENV === "production",
-    sameSite: "Lax", // safer for frontend + backend
+
+    sameSite:
+      process.env.NODE_ENV === "production"
+        ? "None"
+        : "Lax",
+
   };
 
-  res.status(statusCode)
+  res
+    .status(statusCode)
     .cookie("token", token, options)
     .json({
       success: true,
@@ -21,4 +33,3 @@ const sendToken = (user, statusCode, res) => {
 };
 
 export default sendToken;
-
