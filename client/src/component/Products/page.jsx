@@ -5,13 +5,13 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { getproduct } from "../../redux/features/products/productSlice";
 
-import productCategory from "../category/page";
-import Navbar from "../Navbar/page";
-import Loader from "../Loader/page";
-import ProductCard from "../ProductCard/page";
-import NoProductFound from "../noproduct/page";
-import Footer from "../Footer/page";
-import Pagination from "../Pagination/page";
+import productCategory from "../category/page.jsx";
+import Navbar from "../Navbar/page.jsx";
+import Loader from "../Loader/page.jsx";
+import ProductCard from "../ProductCard/page.jsx";
+import NoProductFound from "../noproduct/page.jsx";
+import Footer from "../Footer/page.jsx";
+import Pagination from "../Pagination/page.jsx";
 
 const ProductsContent = () => {
     const dispatch = useDispatch();
@@ -232,11 +232,10 @@ const ProductsContent = () => {
                                     handleCategoryClick("")
                                 }
                                 aria-pressed={!category}
-                                className={`w-full text-left px-4 py-2 rounded-lg transition-all duration-200 ${
-                                    !category
+                                className={`w-full text-left px-4 py-2 rounded-lg transition-all duration-200 ${!category
                                         ? "bg-gray-200 text-gray-900 font-semibold ring-1 ring-gray-300"
                                         : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                }`}
+                                    }`}
                             >
                                 All Categories
                             </button>
@@ -256,11 +255,10 @@ const ProductsContent = () => {
                                         aria-pressed={
                                             cat.value === category
                                         }
-                                        className={`w-full text-left px-4 py-2 rounded-lg transition-all duration-200 ${
-                                            cat.value === category
+                                        className={`w-full text-left px-4 py-2 rounded-lg transition-all duration-200 ${cat.value === category
                                                 ? "bg-gray-200 text-gray-900 font-semibold ring-1 ring-gray-300"
                                                 : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                        }`}
+                                            }`}
                                     >
                                         {cat.label}
                                     </button>

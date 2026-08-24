@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
 import { getAllMyOrders } from '../../redux/features/order/orderSlice';
-import Navbar from '../Navbar/page';
-import Footer from '../Footer/page';
+import Navbar from '../Navbar/page.jsx';
+import Footer from '../Footer/page.jsx';
 
 
 
 const Orders = () => {
-     const navigate = useNavigate();
+    const navigate = useNavigate();
     const { orders = [], loading, error } = useSelector((state) => state.order);
     const dispatch = useDispatch();
 

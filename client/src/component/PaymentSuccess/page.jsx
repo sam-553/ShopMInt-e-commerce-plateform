@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { toast } from 'react-toastify';
 
- import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { clearCart } from '../../redux/features/cart/cartSlice';
-import Navbar from '../Navbar/page';
-import Loader from '../Loader/page';
-import Footer from '../Footer/page';
+import Navbar from '../Navbar/page.jsx';
+import Loader from '../Loader/page.jsx';
+import Footer from '../Footer/page.jsx';
 import { createNewOrder, removeError, removeSuccess } from '../../redux/features/order/orderSlice';
 
 const PaymentSuccess = () => {

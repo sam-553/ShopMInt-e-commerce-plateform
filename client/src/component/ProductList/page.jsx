@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-import Navbar from "../Navbar/page";
-import Footer from "../Footer/page";
-import Loader from "../Loader/page";
+import Navbar from "../Navbar/page.jsx";
+import Footer from "../Footer/page.jsx";
+import Loader from "../Loader/page.jsx";
 
 import {
   deleteProduct,
@@ -141,17 +141,17 @@ const ProductList = () => {
         typeof error === "string"
           ? error
           : error?.message ||
-              "Error deleting product"
+          "Error deleting product"
       );
     }
   };
 
   const validProducts = Array.isArray(products)
     ? products.filter(
-        (product) =>
-          product &&
-          product.name
-      )
+      (product) =>
+        product &&
+        product.name
+    )
     : [];
 
   if (loading) {
@@ -178,11 +178,10 @@ const ProductList = () => {
                 onClick={() =>
                   setView("table")
                 }
-                className={`p-2 rounded-lg shadow transition ${
-                  view === "table"
+                className={`p-2 rounded-lg shadow transition ${view === "table"
                     ? "bg-gray-800 text-white"
                     : "bg-white text-gray-700 hover:bg-gray-200"
-                }`}
+                  }`}
                 title="Table View"
               >
                 <Table className="w-5 h-5" />
@@ -193,11 +192,10 @@ const ProductList = () => {
                 onClick={() =>
                   setView("row")
                 }
-                className={`p-2 rounded-lg shadow transition ${
-                  view === "row"
+                className={`p-2 rounded-lg shadow transition ${view === "row"
                     ? "bg-gray-800 text-white"
                     : "bg-white text-gray-700 hover:bg-gray-200"
-                }`}
+                  }`}
                 title="Card View"
               >
                 <Rows className="w-5 h-5" />
@@ -328,13 +326,12 @@ const ProductList = () => {
                         </td>
 
                         <td
-                          className={`p-4 font-medium ${
-                            Number(
-                              product.stock
-                            ) > 0
+                          className={`p-4 font-medium ${Number(
+                            product.stock
+                          ) > 0
                               ? "text-green-600"
                               : "text-red-600"
-                          }`}
+                            }`}
                         >
                           {product.stock ?? 0}
                         </td>
@@ -477,7 +474,7 @@ const ProductList = () => {
                           ₹
                           {Number(
                             product.price ||
-                              0
+                            0
                           ).toLocaleString(
                             "en-IN"
                           )}
@@ -522,13 +519,12 @@ const ProductList = () => {
                         </span>
 
                         <span
-                          className={`font-medium ${
-                            Number(
-                              product.stock
-                            ) > 0
+                          className={`font-medium ${Number(
+                            product.stock
+                          ) > 0
                               ? "text-green-600"
                               : "text-red-600"
-                          }`}
+                            }`}
                         >
                           {product.stock ??
                             0}

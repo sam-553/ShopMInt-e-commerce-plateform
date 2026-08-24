@@ -8,9 +8,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getSingleOrder, removeError, removeSuccess } from '../../../redux/features/order/orderSlice';
 import { updateOrderStatus } from '../../../redux/features/admin/adminSlice';
-import Loader from '../../Loader/page';
-import Navbar from '../../Navbar/page';
-import Footer from '../../Footer/page';
+import Loader from '../../Loader/page.jsx';
+import Navbar from '../../Navbar/page.jsx';
+import Footer from '../../Footer/page.jsx';
 
 
 const UpdateOrder = () => {
@@ -18,8 +18,8 @@ const UpdateOrder = () => {
     const dispatch = useDispatch();
     const params = useParams();
     const orderId = params.id;
-    const navigate=useNavigate();
- 
+    const navigate = useNavigate();
+
 
     const { order, loading, error } = useSelector((state) => state.order);
     const { success, error: adminError } = useSelector((state) => state.admin);

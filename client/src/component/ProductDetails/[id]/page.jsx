@@ -12,9 +12,9 @@ import { createReview, getproductDetails, removeError, removeSuccess } from '../
 import { addtoCart, removeMessage } from '../../../redux/features/cart/cartSlice';
 
 import { IconStar, IconStarFilled, IconStarsFilled } from '@tabler/icons-react';
-import Navbar from '../../Navbar/page';
-import Loader from '../../Loader/page';
-import Footer from '../../Footer/page';
+import Navbar from '../../Navbar/page.jsx';
+import Loader from '../../Loader/page.jsx';
+import Footer from '../../Footer/page.jsx';
 import { useParams } from 'react-router-dom';
 
 
@@ -41,8 +41,8 @@ const ProductDetails = () => {
   useEffect(() => {
     if (error) {
       toast.error(error);
-     
-      
+
+
       dispatch(removeError());
     }
   }, [error, dispatch]);
@@ -50,8 +50,8 @@ const ProductDetails = () => {
   useEffect(() => {
     if (cartError) {
       toast.error(cartError);
-      
-      
+
+
       dispatch(removeError());
     }
   }, [cartError, dispatch]);
@@ -126,9 +126,8 @@ const ProductDetails = () => {
           <IconStarFilled
             key={index}
             size={20}
-            className={`transition-colors ${
-              (hoverRating ?? value) > index ? 'text-yellow-400' : 'text-gray-300'
-            }`}
+            className={`transition-colors ${(hoverRating ?? value) > index ? 'text-yellow-400' : 'text-gray-300'
+              }`}
             onClick={() => !disabled && onChange(index + 1)}
             onMouseEnter={() => !disabled && setHoverRating(index + 1)}
             onMouseLeave={() => !disabled && setHoverRating(null)}

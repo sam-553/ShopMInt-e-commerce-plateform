@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { saveShippingInfo } from "../../redux/features/cart/cartSlice";
-import Navbar from "../Navbar/page";
-import Checkoutpath from "../checkoutPath/page";
-import Footer from "../Footer/page";
+import Navbar from "../Navbar/page.jsx";
+import Checkoutpath from "../checkoutPath/page.jsx";
+import Footer from "../Footer/page.jsx";
 
 const INDIA_STATES = {
   "Andhra Pradesh": [
@@ -285,9 +285,9 @@ const Shipping = () => {
 
   const cities = state
     ? [
-        ...(INDIA_STATES[state] || []),
-        ...(INDIA_UNION_TERRITORIES[state] || []),
-      ]
+      ...(INDIA_STATES[state] || []),
+      ...(INDIA_UNION_TERRITORIES[state] || []),
+    ]
     : [];
 
   const handleshopinginfoSubmit = (e) => {

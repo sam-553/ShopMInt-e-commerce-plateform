@@ -4,9 +4,9 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import Navbar from "../Navbar/page";
-import Checkoutpath from "../checkoutPath/page";
-import Footer from "../Footer/page";
+import Navbar from "../Navbar/page.jsx";
+import Checkoutpath from "../checkoutPath/page.jsx";
+import Footer from "../Footer/page.jsx";
 
 const API_URL = "http://localhost:5000/api/payment";
 
@@ -348,8 +348,8 @@ const AddPayment = () => {
               onClick={completePayment}
               disabled={paymentLoading}
               className={`w-full md:w-[60%] bg-gray-700 hover:bg-gray-900 text-white py-3 rounded-xl font-semibold shadow-md transition ${paymentLoading
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
+                ? "opacity-50 cursor-not-allowed"
+                : ""
                 }`}
             >
               {paymentLoading ? "Processing..." : "Pay Now"}

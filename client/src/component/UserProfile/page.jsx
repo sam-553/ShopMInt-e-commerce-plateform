@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 
-import Navbar from "../Navbar/page";
-import Loader from "../Loader/page";
-import Footer from "../Footer/page";
+import Navbar from "../Navbar/page.jsx";
+import Loader from "../Loader/page.jsx";
+import Footer from "../Footer/page.jsx";
 
 import { updateUser } from "../../redux/features/user/userSlice";
 
@@ -197,11 +197,10 @@ const UserProfile = () => {
               onChange={(e) => setName(e.target.value)}
               disabled={!isEditing}
               autoComplete="name"
-              className={`w-full mt-1 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 transition ${
-                isEditing
+              className={`w-full mt-1 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 transition ${isEditing
                   ? "border-gray-300 bg-white text-gray-800"
                   : "bg-gray-100 text-gray-500 cursor-not-allowed border-gray-200"
-              }`}
+                }`}
             />
           </div>
 
@@ -220,11 +219,10 @@ const UserProfile = () => {
               onChange={(e) => setEmail(e.target.value)}
               disabled={!isEditing}
               autoComplete="email"
-              className={`w-full mt-1 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 transition ${
-                isEditing
+              className={`w-full mt-1 px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 transition ${isEditing
                   ? "border-gray-300 bg-white text-gray-800"
                   : "bg-gray-100 text-gray-500 cursor-not-allowed border-gray-200"
-              }`}
+                }`}
             />
           </div>
 

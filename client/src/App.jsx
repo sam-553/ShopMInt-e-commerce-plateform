@@ -2,94 +2,94 @@ import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // Keep Loader as a normal import if it is small
-import Loader from "./component/Loader/page";
+import Loader from "./component/Loader/page.jsx";
 
 // Lazy load pages/components
-const Home = lazy(() => import("./pages/Home/page"));
-const Login = lazy(() => import("./pages/Login/page"));
-const Signup = lazy(() => import("./pages/Signup/page"));
+const Home = lazy(() => import("./page.jsxs/Home/page.jsx"));
+const Login = lazy(() => import("./page.jsxs/Login/page.jsx"));
+const Signup = lazy(() => import("./page.jsxs/Signup/page.jsx"));
 
-const UserProfile = lazy(() => import("./component/UserProfile/page"));
-const UpdatePassword = lazy(() => import("./component/UpdatePassword/page"));
+const UserProfile = lazy(() => import("./component/UserProfile/page.jsx"));
+const UpdatePassword = lazy(() => import("./component/UpdatePassword/page.jsx"));
 
 const AdminDashboard = lazy(
-  () => import("./component/AdminDashboard/page")
+  () => import("./component/AdminDashboard/page.jsx")
 );
 
 const UploadProduct = lazy(
-  () => import("./component/UploadProduct/page")
+  () => import("./component/UploadProduct/page.jsx")
 );
 
 const ProductList = lazy(
-  () => import("./component/ProductList/page")
+  () => import("./component/ProductList/page.jsx")
 );
 
 const UpdateProduct = lazy(
-  () => import("./component/UpdateProduct/[id]/page")
+  () => import("./component/UpdateProduct/[id]/page.jsx")
 );
 
 const AllUsers = lazy(
-  () => import("./component/AllUsers/page")
+  () => import("./component/AllUsers/page.jsx")
 );
 
 const UpdateUser = lazy(
-  () => import("./component/UpdateUser/[id]/page")
+  () => import("./component/UpdateUser/[id]/page.jsx")
 );
 
 const ProductDetails = lazy(
-  () => import("./component/ProductDetails/[id]/page")
+  () => import("./component/ProductDetails/[id]/page.jsx")
 );
 
 const Cartitem = lazy(
-  () => import("./component/CartItem/page")
+  () => import("./component/CartItem/page.jsx")
 );
 
 const Shipping = lazy(
-  () => import("./component/Shipping/page")
+  () => import("./component/Shipping/page.jsx")
 );
 
 const ConfirmOrder = lazy(
-  () => import("./component/ConfirmOrder/page")
+  () => import("./component/ConfirmOrder/page.jsx")
 );
 
 const AddPayment = lazy(
-  () => import("./component/AddPayment/page")
+  () => import("./component/AddPayment/page.jsx")
 );
 
 const PaymentSuccess = lazy(
-  () => import("./component/PaymentSuccess/page")
+  () => import("./component/PaymentSuccess/page.jsx")
 );
 
 const Orders = lazy(
-  () => import("./component/Orders/page")
+  () => import("./component/Orders/page.jsx")
 );
 
 const VieworderDetails = lazy(
-  () => import("./component/VieworderDetails/[id]/page")
+  () => import("./component/VieworderDetails/[id]/page.jsx")
 );
 
 const Products = lazy(
-  () => import("./component/Products/page")
+  () => import("./component/Products/page.jsx")
 );
 
 const AllOrders = lazy(
-  () => import("./component/AllOrder/page")
+  () => import("./component/AllOrder/page.jsx")
 );
 
 const UpdateOrder = lazy(
-  () => import("./component/UpdateOrder/[id]/page")
+  () => import("./component/UpdateOrder/[id]/page.jsx")
 );
 
 const AdminReview = lazy(
-  () => import("./component/ReviewList/page")
+  () => import("./component/ReviewList/page.jsx")
 );
 
 const ForgotPassword = lazy(
-  () => import("./component/forgotPassword/page")
+  () => import("./component/forgotPassword/page.jsx")
 );
 
 const ResetPassword = lazy(
-  () => import("./component/ResetPassword/[token]/page")
+  () => import("./component/ResetPassword/[token]/page.jsx")
 );
 
 const App = () => {

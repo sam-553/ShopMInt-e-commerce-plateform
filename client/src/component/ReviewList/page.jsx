@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { deleteReviews, fetchAllReviews, fetchSingleProductReviews } from '../../redux/features/admin/adminSlice';
-import Navbar from '../Navbar/page';
-import Loader from '../Loader/page';
-import Footer from '../Footer/page';
+import Navbar from '../Navbar/page.jsx';
+import Loader from '../Loader/page.jsx';
+import Footer from '../Footer/page.jsx';
 
 
 const AdminReview = () => {
@@ -43,7 +43,7 @@ const AdminReview = () => {
             .then(() => {
                 toast.update("Review deleted successfully.");
                 dispatch(fetchAllReviews());
-                dispatch(fetchSingleProductReviews(selectedProduct.productId)); 
+                dispatch(fetchSingleProductReviews(selectedProduct.productId));
             })
             .catch(() => {
                 toast.error("Failed to delete review.");
@@ -51,7 +51,7 @@ const AdminReview = () => {
     };
 
 
-  
+
     const uniqueProducts = reviews.reduce((acc, curr) => {
         if (!acc.find(item => item.productId === curr.productId)) {
             acc.push({
@@ -68,7 +68,7 @@ const AdminReview = () => {
         <>
             <Navbar />
             {
-                loading ? (<Loader/>) : (
+                loading ? (<Loader />) : (
                     <div className="max-w-5xl mx-auto p-6 space-y-6">
                         <h1 className="text-3xl font-bold text-gray-800 text-center">Product Reviews Management</h1>
 

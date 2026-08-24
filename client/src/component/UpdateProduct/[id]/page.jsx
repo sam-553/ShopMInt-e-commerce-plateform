@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import Navbar from "../../Navbar/page";
-import Loader from "../../Loader/page";
-import Footer from "../../Footer/page";
-import productCategory from "../../category/page";
+import Navbar from "../../Navbar/page.jsx";
+import Loader from "../../Loader/page.jsx";
+import Footer from "../../Footer/page.jsx";
+import productCategory from "../../category/page.jsx";
 
 import {
   updateProduct,
@@ -259,7 +259,7 @@ const UpdateProduct = () => {
         typeof err === "string"
           ? err
           : err?.message ||
-              "Product update failed"
+          "Product update failed"
       );
     }
   };
@@ -270,7 +270,7 @@ const UpdateProduct = () => {
         typeof error === "string"
           ? error
           : error?.message ||
-              "Something went wrong"
+          "Something went wrong"
       );
 
       dispatch(removeError());
@@ -397,9 +397,8 @@ const UpdateProduct = () => {
 
                         <img
                           src={url}
-                          alt={`New image ${
-                            index + 1
-                          }`}
+                          alt={`New image ${index + 1
+                            }`}
                           className="object-cover w-full h-28"
                         />
 
@@ -443,9 +442,8 @@ const UpdateProduct = () => {
 
                         <img
                           src={url}
-                          alt={`Existing image ${
-                            index + 1
-                          }`}
+                          alt={`Existing image ${index + 1
+                            }`}
                           className="object-cover w-full h-28"
                         />
 
@@ -508,11 +506,10 @@ const UpdateProduct = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`bg-gray-700 hover:bg-gray-800 text-white rounded-xl py-3 font-medium transition ${
-                loading
+              className={`bg-gray-700 hover:bg-gray-800 text-white rounded-xl py-3 font-medium transition ${loading
                   ? "opacity-50 cursor-not-allowed"
                   : ""
-              }`}
+                }`}
             >
               {loading
                 ? "Updating..."

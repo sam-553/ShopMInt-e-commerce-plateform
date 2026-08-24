@@ -9,8 +9,8 @@ import {
   IndianRupee,
 } from "lucide-react";
 import { getSingleOrder } from "../../../redux/features/order/orderSlice";
-import Navbar from "../../Navbar/page";
-import Footer from "../../Footer/page";
+import Navbar from "../../Navbar/page.jsx";
+import Footer from "../../Footer/page.jsx";
 
 
 const VieworderDetails = () => {
@@ -285,7 +285,7 @@ const VieworderDetails = () => {
           )}
       </main>
 
-      <Footer/>
+      <Footer />
     </>
   );
 };

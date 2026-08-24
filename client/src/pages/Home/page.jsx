@@ -4,11 +4,12 @@ import { toast } from "react-toastify";
 
 import { getproduct } from "../../redux/features/products/productSlice";
 
-import Banner from "../../component/Banner/page";
-import ProductCard from "../../component/ProductCard/page";
-import Footer from "../../component/Footer/page";
-import Navbar from "../../component/Navbar/page";
-import Loader from "../../component/Loader/page";
+import Banner from "../../component/Banner/page.jsx";
+
+import Footer from "../../component/Footer/page.jsx";
+import Navbar from "../../component/Navbar/page.jsx";
+import Loader from "../../component/Loader/page.jsx";
+import ProductCard from "../../component/ProductCard/page.jsx";
 
 const Home = () => {
   const dispatch = useDispatch();

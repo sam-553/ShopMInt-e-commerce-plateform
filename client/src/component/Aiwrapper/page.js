@@ -1,4 +1,4 @@
-import Ai from "app/voiceNevigate/page";
+import Ai from "app/voiceNevigate/page.jsx";
 
 
 export default function Aiwrapper() {

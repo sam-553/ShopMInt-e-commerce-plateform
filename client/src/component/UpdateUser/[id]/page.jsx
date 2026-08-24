@@ -4,14 +4,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getSingleUser, removeError, removeSuccess, updateUserRole } from '../../../redux/features/admin/adminSlice';
 
 import { toast } from 'react-toastify';
-import Loader from '../../Loader/page';
-import Navbar from '../../Navbar/page';
-import Footer from '../../Footer/page';
+import Loader from '../../Loader/page.jsx';
+import Navbar from '../../Navbar/page.jsx';
+import Footer from '../../Footer/page.jsx';
 
 const UpdateUser = () => {
     const params = useParams();
     const UserId = params?.id;
-   
+
     const navigate = useNavigate();
 
     const { user, loading, error, success } = useSelector((state) => state.admin);

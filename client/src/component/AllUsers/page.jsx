@@ -6,15 +6,15 @@ import { Pencil, Trash } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteuser, fetchAllUsers, removeError } from '../../redux/features/admin/adminSlice';
 import { toast } from 'react-toastify';
-import Navbar from '../Navbar/page';
-import Footer from '../Footer/page';
+import Navbar from '../Navbar/page.jsx';
+import Footer from '../Footer/page.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const AllUsers = () => {
     const { users = [], loading, error } = useSelector((state) => state.admin);
     const dispatch = useDispatch();
     console.log(users);
-  const navigate=useNavigate();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -103,7 +103,7 @@ const AllUsers = () => {
                     </table>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
 };

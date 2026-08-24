@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteOrder, fetchAllOrders, removeError } from '../../redux/features/admin/adminSlice';
 import { toast } from 'react-toastify';
 
- import { useNavigate } from 'react-router-dom';
-import Loader from '../Loader/page';
-import Navbar from '../Navbar/page';
-import Footer from '../Footer/page';
+import { useNavigate } from 'react-router-dom';
+import Loader from '../Loader/page.jsx';
+import Navbar from '../Navbar/page.jsx';
+import Footer from '../Footer/page.jsx';
 
 const AllOrders = () => {
     const navigate = useNavigate();
@@ -50,7 +50,7 @@ const AllOrders = () => {
                 <Loader />
             ) : (
                 <>
-                    <Navbar/>
+                    <Navbar />
                     <div className="max-w-6xl mx-auto px-4 mt-20">
                         <h2 className="text-center text-3xl font-bold text-gray-800 mb-8">All Orders</h2>
 

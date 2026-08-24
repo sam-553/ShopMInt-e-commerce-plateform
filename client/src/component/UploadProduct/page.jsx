@@ -7,10 +7,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-import Navbar from "../Navbar/page";
-import Loader from "../Loader/page";
-import Footer from "../Footer/page";
-import productCategory from "../category/page";
+import Navbar from "../Navbar/page.jsx";
+import Loader from "../Loader/page.jsx";
+import Footer from "../Footer/page.jsx";
+import productCategory from "../category/page.jsx";
 
 import {
   removeError,
@@ -194,7 +194,7 @@ const UploadProduct = () => {
         typeof error === "string"
           ? error
           : error?.message ||
-              "Product upload failed"
+          "Product upload failed"
       );
     }
   };
@@ -326,9 +326,8 @@ const UploadProduct = () => {
                         >
                           <img
                             src={url}
-                            alt={`Product preview ${
-                              index + 1
-                            }`}
+                            alt={`Product preview ${index + 1
+                              }`}
                             className="rounded-xl object-cover w-full h-24 cursor-pointer border border-gray-300 shadow hover:scale-105 transition"
                             onClick={() => {
                               setFullscreenImage(
@@ -401,11 +400,10 @@ const UploadProduct = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`bg-gray-700 hover:bg-gray-800 text-white rounded-xl py-3 font-medium transition ${
-                    loading
+                  className={`bg-gray-700 hover:bg-gray-800 text-white rounded-xl py-3 font-medium transition ${loading
                       ? "opacity-50 cursor-not-allowed"
                       : ""
-                  }`}
+                    }`}
                 >
                   {loading
                     ? "Uploading..."

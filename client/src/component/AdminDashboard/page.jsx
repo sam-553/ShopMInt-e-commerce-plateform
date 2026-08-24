@@ -17,9 +17,9 @@ import {
   fetchAllOrders,
 } from "../../redux/features/admin/adminSlice";
 
-import Loader from "../Loader/page";
-import Navbar from "../Navbar/page";
-import Footer from "../Footer/page";
+import Loader from "../Loader/page.jsx";
+import Navbar from "../Navbar/page.jsx";
+import Footer from "../Footer/page.jsx";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -78,25 +78,25 @@ const AdminDashboard = () => {
 
   const outOfStock = Array.isArray(products)
     ? products.filter(
-        (product) => Number(product.stock) === 0
-      ).length
+      (product) => Number(product.stock) === 0
+    ).length
     : 0;
 
   const inStock = Array.isArray(products)
     ? products.filter(
-        (product) => Number(product.stock) > 0
-      ).length
+      (product) => Number(product.stock) > 0
+    ).length
     : 0;
 
   const totalReviews = Array.isArray(products)
     ? products.reduce(
-        (total, product) =>
-          total +
-          (Array.isArray(product.reviews)
-            ? product.reviews.length
-            : 0),
-        0
-      )
+      (total, product) =>
+        total +
+        (Array.isArray(product.reviews)
+          ? product.reviews.length
+          : 0),
+      0
+    )
     : 0;
 
   const revenue = Number(totalAmount) || 0;

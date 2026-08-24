@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-  import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import { IconTrash } from '@tabler/icons-react';
 import { toast } from 'react-toastify';
 
-import Navbar from '../Navbar/page';
-import Footer from '../Footer/page';
+import Navbar from '../Navbar/page.jsx';
+import Footer from '../Footer/page.jsx';
 import { removeFromCart } from '../../redux/features/cart/cartSlice';
 
 const Cartitem = () => {

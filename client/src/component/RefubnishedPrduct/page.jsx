@@ -2,7 +2,7 @@
 export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react'; import { Link } from 'react-router-dom';
-import Rating from 'app/rating/page';
+import Rating from 'app/rating/page.jsx';
 
 const Refubnishedproduct = ({ product }) => {
 

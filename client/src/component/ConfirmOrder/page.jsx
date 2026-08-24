@@ -3,15 +3,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import Navbar from '../Navbar/page';
-import Checkoutpath from '../checkoutPath/page';
-import Footer from '../Footer/page';
+import Navbar from '../Navbar/page.jsx';
+import Checkoutpath from '../checkoutPath/page.jsx';
+import Footer from '../Footer/page.jsx';
 
 const ConfirmOrder = () => {
   const { shippingInfo, cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user);
   const [isMounted, setIsMounted] = useState(false);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsMounted(true);
