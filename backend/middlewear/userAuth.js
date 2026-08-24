@@ -3,67 +3,82 @@ import handleasyncError from "./handleasyncError.js";
 import jwt from "jsonwebtoken";
 import User from "../model/usermodel.js";
 
-// Middleware to verify JWT token
+// ======================================================
+// VERIFY USER AUTHENTICATION
+// ======================================================
+
 const verifyUserAuth = handleasyncError(async (req, res, next) => {
+  console.log("========== AUTH DEBUG ==========");
+  console.log("Request URL:", req.originalUrl);
+  console.log("Request Method:", req.method);
+  console.log("Origin:", req.headers.origin);
+  console.log("Cookies:", req.cookies);
+  console.log(
+    "Token:",
+    req.cookies?.token ? "TOKEN EXISTS" : "NO TOKEN"
+  );
+  console.log("================================");
+
+  // Get JWT token from HTTP-only cookie
+  const token = req.cookies?.token;
+
+  // ----------------------------------------------------
+  // Token does not exist
+  // ----------------------------------------------------
+
+  if (!token) {
+    console.log("❌ AUTH FAILED: Token not found in cookies");
+
+    return next(
+      new HandleError(
+        "Authentication is missing! Please login to continue.",
+        401
+      )
+    );
+  }
+
+  // ----------------------------------------------------
+  // Verify JWT token
+  // ----------------------------------------------------
+
   try {
-    let token = null;
-
-    // --------------------------------
-    // 1. Get token from Authorization header
-    // --------------------------------
-    const authHeader = req.headers.authorization;
-
-    if (authHeader && authHeader.startsWith("Bearer ")) {
-      token = authHeader.split(" ")[1];
-    }
-
-    // --------------------------------
-    // 2. Fallback: get token from cookie
-    // --------------------------------
-    if (!token && req.cookies?.token) {
-      token = req.cookies.token;
-    }
-
-    // --------------------------------
-    // 3. Token missing
-    // --------------------------------
-    if (!token) {
-      return next(
-        new HandleError(
-          "Authentication is missing! Please login to continue.",
-          401
-        )
-      );
-    }
-
-    // --------------------------------
-    // 4. Verify JWT
-    // --------------------------------
     const decodedData = jwt.verify(
       token,
       process.env.JWT_SECRET_KEY
     );
 
-    // --------------------------------
-    // 5. Find user
-    // --------------------------------
+    console.log("✅ JWT decoded successfully");
+    console.log("Decoded user ID:", decodedData.id);
+
+    // --------------------------------------------------
+    // Find user
+    // --------------------------------------------------
+
     const user = await User.findById(decodedData.id);
 
     if (!user) {
+      console.log("❌ AUTH FAILED: User not found");
+
       return next(
         new HandleError(
-          "User no longer exists.",
+          "User not found.",
           401
         )
       );
     }
 
+    // Attach authenticated user to request
     req.user = user;
+
+    console.log("✅ USER AUTHENTICATED");
+    console.log("User ID:", user._id);
+    console.log("User Email:", user.email);
+    console.log("================================");
 
     next();
 
   } catch (error) {
-    console.error("AUTH ERROR:", error);
+    console.error("❌ JWT ERROR:", error.message);
 
     return next(
       new HandleError(
@@ -74,14 +89,16 @@ const verifyUserAuth = handleasyncError(async (req, res, next) => {
   }
 });
 
-// Role-based access middleware
+// ======================================================
+// ROLE BASED ACCESS
+// ======================================================
+
 const rolebasedAccess = (...roles) => {
   return (req, res, next) => {
-
     if (!req.user) {
       return next(
         new HandleError(
-          "Authentication required.",
+          "Authentication is required.",
           401
         )
       );
@@ -100,7 +117,11 @@ const rolebasedAccess = (...roles) => {
   };
 };
 
+// ======================================================
+// EXPORT
+// ======================================================
+
 export {
   verifyUserAuth,
-  rolebasedAccess
+  rolebasedAccess,
 };

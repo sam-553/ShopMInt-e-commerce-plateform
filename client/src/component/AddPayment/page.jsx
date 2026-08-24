@@ -5,7 +5,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import Navbar from "../Navbar/page.jsx";
-
 import Footer from "../Footer/page.jsx";
 import CheckoutPath from "../CheckoutPath/page.jsx";
 
@@ -33,7 +32,8 @@ const AddPayment = () => {
 
   const subtotal = cartItems.reduce(
     (acc, item) =>
-      acc + Number(item.price || 0) * Number(item.quantity || 0),
+      acc +
+      Number(item.price || 0) * Number(item.quantity || 0),
     0
   );
 
@@ -41,30 +41,18 @@ const AddPayment = () => {
   const tax = subtotal * 0.18;
   const total = subtotal + shippingCharges + tax;
 
-  const getToken = () => {
-    const token = localStorage.getItem("token");
-
-    if (!token || token === "undefined" || token === "null") {
-      return null;
-    }
-
-    return token;
-  };
-
-  const getAuthConfig = () => {
-    const token = getToken();
-
-    if (!token) {
-      return null;
-    }
-
-    return {
-      withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    };
+  /*
+   * IMPORTANT:
+   * Your backend authentication middleware reads:
+   *
+   * req.cookies.token
+   *
+   * Therefore we only need withCredentials:true.
+   *
+   * Do NOT depend on localStorage token here.
+   */
+  const authConfig = {
+    withCredentials: true,
   };
 
   const handleGoBack = () => {
@@ -79,14 +67,6 @@ const AddPayment = () => {
     try {
       setPaymentLoading(true);
 
-      const token = getToken();
-
-      if (!token) {
-        toast.error("Please login again to continue payment.");
-        navigate("/login");
-        return;
-      }
-
       if (!cartItems.length) {
         toast.error("Your cart is empty.");
         navigate("/cart");
@@ -94,7 +74,9 @@ const AddPayment = () => {
       }
 
       if (!shippingInfo) {
-        toast.error("Please complete your shipping information.");
+        toast.error(
+          "Please complete your shipping information."
+        );
         navigate("/shipping");
         return;
       }
@@ -104,18 +86,16 @@ const AddPayment = () => {
         return;
       }
 
-      const config = getAuthConfig();
-
-      if (!config) {
-        toast.error("Authentication token not found.");
-        navigate("/login");
-        return;
-      }
-
+      /*
+       * STEP 1
+       * Get Razorpay public key
+       */
       const keyResponse = await axios.get(
         `${API_URL}/getKey`,
-        config
+        authConfig
       );
+
+      console.log("Razorpay key response:", keyResponse.data);
 
       const razorpayKey =
         keyResponse.data?.key ||
@@ -123,44 +103,74 @@ const AddPayment = () => {
         keyResponse.data?.razorpayKey;
 
       if (!razorpayKey) {
-        throw new Error("Razorpay key was not received from server.");
+        throw new Error(
+          "Razorpay key was not received from server."
+        );
       }
 
+      /*
+       * STEP 2
+       * Create Razorpay order
+       */
       const orderResponse = await axios.post(
         `${API_URL}/processPayment`,
         {
           amount: Math.round(total),
         },
-        config
+        authConfig
+      );
+
+      console.log(
+        "Razorpay order response:",
+        orderResponse.data
       );
 
       const order =
         orderResponse.data?.order ||
-        orderResponse.data?.data?.order;
+        orderResponse.data?.data?.order ||
+        orderResponse.data?.data;
 
       if (!order) {
-        throw new Error("Razorpay order was not created.");
+        throw new Error(
+          "Razorpay order was not created."
+        );
       }
 
       const razorpayOrderId = order.id;
 
       if (!razorpayOrderId) {
-        throw new Error("Razorpay order ID is missing.");
+        throw new Error(
+          "Razorpay order ID is missing."
+        );
       }
 
+      /*
+       * STEP 3
+       * Check Razorpay SDK
+       */
       if (!window.Razorpay) {
         toast.error(
           "Razorpay SDK not loaded. Please refresh the page."
         );
+        setPaymentLoading(false);
         return;
       }
 
+      /*
+       * STEP 4
+       * Razorpay options
+       */
       const options = {
         key: razorpayKey,
+
         amount: order.amount,
+
         currency: order.currency || "INR",
+
         name: "ShopMint",
+
         description: "ShopMint Order Payment",
+
         order_id: razorpayOrderId,
 
         prefill: {
@@ -185,46 +195,50 @@ const AddPayment = () => {
           color: "#3399cc",
         },
 
+        /*
+         * STEP 5
+         * Verify payment on backend
+         */
         handler: async function (response) {
           try {
-            const currentToken = getToken();
-
-            if (!currentToken) {
-              toast.error(
-                "Login session expired. Please login again."
-              );
-              navigate("/login");
-              return;
-            }
-
-            const verificationConfig = {
-              withCredentials: true,
-              headers: {
-                Authorization: `Bearer ${currentToken}`,
-                "Content-Type": "application/json",
-              },
-            };
-
-            const verificationResponse = await axios.post(
-              `${API_URL}/paymentVerification`,
-              {
-                razorpay_order_id:
-                  response.razorpay_order_id,
-
-                razorpay_payment_id:
-                  response.razorpay_payment_id,
-
-                razorpay_signature:
-                  response.razorpay_signature,
-              },
-              verificationConfig
+            console.log(
+              "Razorpay payment response:",
+              response
             );
 
-            if (verificationResponse.data?.success) {
-              toast.success("Payment successful!");
+            const verificationResponse =
+              await axios.post(
+                `${API_URL}/paymentVerification`,
+                {
+                  razorpay_order_id:
+                    response.razorpay_order_id,
+
+                  razorpay_payment_id:
+                    response.razorpay_payment_id,
+
+                  razorpay_signature:
+                    response.razorpay_signature,
+                },
+                {
+                  withCredentials: true,
+                }
+              );
+
+            console.log(
+              "Payment verification:",
+              verificationResponse.data
+            );
+
+            if (
+              verificationResponse.data?.success
+            ) {
+              toast.success(
+                "Payment successful!"
+              );
 
               const reference =
-                verificationResponse.data?.reference ||
+                verificationResponse.data
+                  ?.reference ||
                 response.razorpay_payment_id;
 
               navigate(
@@ -232,8 +246,9 @@ const AddPayment = () => {
               );
             } else {
               toast.error(
-                verificationResponse.data?.message ||
-                "Payment verification failed."
+                verificationResponse.data
+                  ?.message ||
+                  "Payment verification failed."
               );
             }
           } catch (error) {
@@ -242,9 +257,20 @@ const AddPayment = () => {
               error
             );
 
+            if (
+              error.response?.status === 401
+            ) {
+              toast.error(
+                "Your login session has expired. Please login again."
+              );
+
+              navigate("/login");
+              return;
+            }
+
             toast.error(
               error.response?.data?.message ||
-              "Payment verification failed."
+                "Payment verification failed."
             );
           }
         },
@@ -257,21 +283,29 @@ const AddPayment = () => {
         },
       };
 
-      const razorpay = new window.Razorpay(options);
+      /*
+       * STEP 6
+       * Open Razorpay
+       */
+      const razorpay =
+        new window.Razorpay(options);
 
-      razorpay.on("payment.failed", function (response) {
-        console.error(
-          "Razorpay payment failed:",
-          response.error
-        );
+      razorpay.on(
+        "payment.failed",
+        function (response) {
+          console.error(
+            "Razorpay payment failed:",
+            response.error
+          );
 
-        toast.error(
-          response.error?.description ||
-          "Payment could not be completed."
-        );
+          toast.error(
+            response.error?.description ||
+              "Payment could not be completed."
+          );
 
-        setPaymentLoading(false);
-      });
+          setPaymentLoading(false);
+        }
+      );
 
       razorpay.open();
     } catch (error) {
@@ -286,15 +320,11 @@ const AddPayment = () => {
         error.message ||
         "Payment processing failed.";
 
-      if (
-        error.response?.status === 401 ||
-        message.toLowerCase().includes("token")
-      ) {
+      if (error.response?.status === 401) {
         toast.error(
           "Your login session has expired. Please login again."
         );
 
-        localStorage.removeItem("token");
         navigate("/login");
         return;
       }
@@ -329,7 +359,9 @@ const AddPayment = () => {
 
             <div className="flex justify-between">
               <span>Shipping Charges:</span>
-              <span>₹{shippingCharges.toFixed(2)}</span>
+              <span>
+                ₹{shippingCharges.toFixed(2)}
+              </span>
             </div>
 
             <div className="flex justify-between">
@@ -348,12 +380,15 @@ const AddPayment = () => {
               type="button"
               onClick={completePayment}
               disabled={paymentLoading}
-              className={`w-full md:w-[60%] bg-gray-700 hover:bg-gray-900 text-white py-3 rounded-xl font-semibold shadow-md transition ${paymentLoading
-                ? "opacity-50 cursor-not-allowed"
-                : ""
-                }`}
+              className={`w-full md:w-[60%] bg-gray-700 hover:bg-gray-900 text-white py-3 rounded-xl font-semibold shadow-md transition ${
+                paymentLoading
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
             >
-              {paymentLoading ? "Processing..." : "Pay Now"}
+              {paymentLoading
+                ? "Processing..."
+                : "Pay Now"}
             </button>
 
             <button
