@@ -1,70 +1,222 @@
-import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import React, { lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
 
-import Login from "./pages/Login/page";
-import Signup from "./pages/Signup/page";
+// Keep Loader as a normal import if it is small
+import Loader from "./component/Loader/page";
 
-import Home from "./pages/Home/page";
-import UserProfile from "./component/UserProfile/page";
-import UpdatePassword from "./component/UpdatePassword/page";
-import AdminDashboard from "./component/AdminDashboard/page";
-import UploadProduct from "./component/UploadProduct/page";
-import ProductList from "./component/ProductList/page";
-import UpdateProduct from "./component/UpdateProduct/[id]/page";
-import AllUsers from "./component/AllUsers/page";
-import UpdateUser from "./component/UpdateUser/[id]/page";
-import ProductDetails from "./component/ProductDetails/[id]/page";
-import Cartitem from "./component/CartItem/page";
-import Shipping from "./component/Shipping/page";
-import ConfirmOrder from "./component/ConfirmOrder/page";
-import AddPayment from "./component/AddPayment/page";
-import PaymentSuccess from "./component/PaymentSuccess/page";
-import Orders from "./component/Orders/page";
-import VieworderDetails from "./component/VieworderDetails/[id]/page";
-import Products from "./component/Products/page";
-import AllOrders from "./component/AllOrder/page";
-import UpdateOrder from "./component/UpdateOrder/[id]/page";
-import AdminReview from "./component/ReviewList/page";
-import ForgotPassword from "./component/forgotPassword/page";
-import ResetPassword from "./component/ResetPassword/[token]/page";
+// Lazy load pages/components
+const Home = lazy(() => import("./pages/Home/page"));
+const Login = lazy(() => import("./pages/Login/page"));
+const Signup = lazy(() => import("./pages/Signup/page"));
+
+const UserProfile = lazy(() => import("./component/UserProfile/page"));
+const UpdatePassword = lazy(() => import("./component/UpdatePassword/page"));
+
+const AdminDashboard = lazy(
+  () => import("./component/AdminDashboard/page")
+);
+
+const UploadProduct = lazy(
+  () => import("./component/UploadProduct/page")
+);
+
+const ProductList = lazy(
+  () => import("./component/ProductList/page")
+);
+
+const UpdateProduct = lazy(
+  () => import("./component/UpdateProduct/[id]/page")
+);
+
+const AllUsers = lazy(
+  () => import("./component/AllUsers/page")
+);
+
+const UpdateUser = lazy(
+  () => import("./component/UpdateUser/[id]/page")
+);
+
+const ProductDetails = lazy(
+  () => import("./component/ProductDetails/[id]/page")
+);
+
+const Cartitem = lazy(
+  () => import("./component/CartItem/page")
+);
+
+const Shipping = lazy(
+  () => import("./component/Shipping/page")
+);
+
+const ConfirmOrder = lazy(
+  () => import("./component/ConfirmOrder/page")
+);
+
+const AddPayment = lazy(
+  () => import("./component/AddPayment/page")
+);
+
+const PaymentSuccess = lazy(
+  () => import("./component/PaymentSuccess/page")
+);
+
+const Orders = lazy(
+  () => import("./component/Orders/page")
+);
+
+const VieworderDetails = lazy(
+  () => import("./component/VieworderDetails/[id]/page")
+);
+
+const Products = lazy(
+  () => import("./component/Products/page")
+);
+
+const AllOrders = lazy(
+  () => import("./component/AllOrder/page")
+);
+
+const UpdateOrder = lazy(
+  () => import("./component/UpdateOrder/[id]/page")
+);
+
+const AdminReview = lazy(
+  () => import("./component/ReviewList/page")
+);
+
+const ForgotPassword = lazy(
+  () => import("./component/forgotPassword/page")
+);
+
+const ResetPassword = lazy(
+  () => import("./component/ResetPassword/[token]/page")
+);
 
 const App = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Home/>} />
-      <Route path="/home" element={<Home />} />
+    <Suspense fallback={<Loader />}>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
 
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/userProfile" element={<UserProfile/>} />
-      <Route path="/updatePassword" element={<UpdatePassword/>} />
-      <Route path="/adminDashboard" element={<AdminDashboard/>} />
-      <Route path="/uploadProduct" element={<UploadProduct/>} />
-      <Route path="/productList" element={<ProductList/>} />
-      <Route path="/updateProduct/:id" element={<UpdateProduct/>} />
-      <Route path="/allUsers" element={<AllUsers/>} />
-      <Route path="/updateUser/:id" element={<UpdateUser/>} />
-      <Route path="/productDetails/:id" element={<ProductDetails/>} />
-      <Route path="/cartItem" element={<Cartitem/>} />
-      <Route path="/shipping" element={<Shipping/>} />
-      <Route path="/confirmOrder" element={<ConfirmOrder/>} />
-      <Route path="/addPayment" element={<AddPayment/>} />
-      <Route path="/paymentSuccess" element={<PaymentSuccess/>} />
-      <Route path="/orders" element={<Orders/>} />
-      <Route path="/vieworderDetails/:id" element={<VieworderDetails/>} />
-      <Route path="/products" element={<Products/>} />
-      <Route path="/allOrder" element={<AllOrders/>} />
-      <Route path="/updateOrder/:id" element={<UpdateOrder/>} />
-      <Route path="/reviewList" element={<AdminReview/>} />
-      <Route path="/forgotPassword" element={<ForgotPassword/>} />
-      <Route path="/resetPassword/:token" element={<ResetPassword/>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
+        <Route
+          path="/forgotPassword"
+          element={<ForgotPassword />}
+        />
 
-      
+        <Route
+          path="/resetPassword/:token"
+          element={<ResetPassword />}
+        />
 
-    
-     
-    </Routes>
+        {/* User Routes */}
+        <Route
+          path="/userProfile"
+          element={<UserProfile />}
+        />
+
+        <Route
+          path="/updatePassword"
+          element={<UpdatePassword />}
+        />
+
+        <Route
+          path="/cartItem"
+          element={<Cartitem />}
+        />
+
+        <Route
+          path="/shipping"
+          element={<Shipping />}
+        />
+
+        <Route
+          path="/confirmOrder"
+          element={<ConfirmOrder />}
+        />
+
+        <Route
+          path="/addPayment"
+          element={<AddPayment />}
+        />
+
+        <Route
+          path="/paymentSuccess"
+          element={<PaymentSuccess />}
+        />
+
+        <Route
+          path="/orders"
+          element={<Orders />}
+        />
+
+        <Route
+          path="/vieworderDetails/:id"
+          element={<VieworderDetails />}
+        />
+
+        {/* Product Routes */}
+        <Route
+          path="/products"
+          element={<Products />}
+        />
+
+        <Route
+          path="/productDetails/:id"
+          element={<ProductDetails />}
+        />
+
+        {/* Admin Routes */}
+        <Route
+          path="/adminDashboard"
+          element={<AdminDashboard />}
+        />
+
+        <Route
+          path="/uploadProduct"
+          element={<UploadProduct />}
+        />
+
+        <Route
+          path="/productList"
+          element={<ProductList />}
+        />
+
+        <Route
+          path="/updateProduct/:id"
+          element={<UpdateProduct />}
+        />
+
+        <Route
+          path="/allUsers"
+          element={<AllUsers />}
+        />
+
+        <Route
+          path="/updateUser/:id"
+          element={<UpdateUser />}
+        />
+
+        <Route
+          path="/allOrder"
+          element={<AllOrders />}
+        />
+
+        <Route
+          path="/updateOrder/:id"
+          element={<UpdateOrder />}
+        />
+
+        <Route
+          path="/reviewList"
+          element={<AdminReview />}
+        />
+      </Routes>
+    </Suspense>
   );
 };
 
