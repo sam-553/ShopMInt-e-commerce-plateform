@@ -1,13 +1,12 @@
 import dotenv from "dotenv";
-
-dotenv.config();
-
+dotenv.config({
+  path: "./config/config.env",
+});
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import cloudinaryModule from "cloudinary";
-
 import connectDb from "./config/connection.js";
 import productrouter from "./routes/productRoutes.js";
 import userrouter from "./routes/userRoutes.js";
@@ -15,16 +14,25 @@ import orderrouter from "./routes/orderRoutes.js";
 import paymentrouter from "./routes/paymentRoutes.js";
 import HandleErrorMiddleware from "./middlewear/error.js";
 
+
+ connectDb();
+
 const app = express();
+
+const port = process.env.PORT || 5000;
+
+
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://shopmint1.vercel.app",
+ 
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
+      // Allow requests without origin
+      // Example: Postman, server-to-server requests
       if (!origin) {
         return callback(null, true);
       }
@@ -35,11 +43,26 @@ app.use(
 
       return callback(new Error("Not allowed by CORS"));
     },
+
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+
+    methods: [
+      "GET",
+      "POST",
+      "PUT",
+      "DELETE",
+      "PATCH",
+      "OPTIONS",
+    ],
+
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+    ],
   })
 );
+
+
 
 app.use(cookieParser());
 
@@ -65,6 +88,8 @@ app.use(
   })
 );
 
+
+
 const cloudinary = cloudinaryModule.v2;
 
 cloudinary.config({
@@ -73,6 +98,8 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
+
+
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -80,21 +107,22 @@ app.get("/", (req, res) => {
   });
 });
 
+
+
 app.use("/api/product", productrouter);
+
 app.use("/api/user", userrouter);
+
 app.use("/api/order", orderrouter);
+
 app.use("/api/payment", paymentrouter);
+
+
 
 app.use(HandleErrorMiddleware);
 
-// Connect MongoDB before handling requests
-app.use(async (req, res, next) => {
-  try {
-    await connectDb();
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
 
-export default app;
+
+app.listen(port, () => {
+  console.log(`✅ Server running on port ${port}`);
+});
