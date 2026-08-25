@@ -24,16 +24,15 @@ const port = process.env.PORT || 5000;
 
 
 const allowedOrigins = [
-  "https://shopmint-client.vercel.app/",
+  "https://shopmint-client.vercel.app",
   "http://localhost:5173",
- 
+  "http://localhost:3000",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests without origin
-      // Example: Postman, server-to-server requests
+      // Allow Postman/server-to-server requests
       if (!origin) {
         return callback(null, true);
       }
@@ -41,6 +40,8 @@ app.use(
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
+
+      console.log("❌ CORS blocked origin:", origin);
 
       return callback(new Error("Not allowed by CORS"));
     },
@@ -51,8 +52,8 @@ app.use(
       "GET",
       "POST",
       "PUT",
-      "DELETE",
       "PATCH",
+      "DELETE",
       "OPTIONS",
     ],
 
@@ -62,7 +63,6 @@ app.use(
     ],
   })
 );
-
 
 
 app.use(cookieParser());
