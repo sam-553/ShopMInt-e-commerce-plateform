@@ -1,16 +1,12 @@
 import dotenv from "dotenv";
-
 dotenv.config({
   path: "./config/config.env",
 });
-
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import fileUpload from "express-fileupload";
 import cloudinaryModule from "cloudinary";
-
-
 import connectDb from "./config/connection.js";
 import productrouter from "./routes/productRoutes.js";
 import userrouter from "./routes/userRoutes.js";
@@ -19,7 +15,7 @@ import paymentrouter from "./routes/paymentRoutes.js";
 import HandleErrorMiddleware from "./middlewear/error.js";
 
 
-await connectDb();
+ connectDb();
 
 const app = express();
 
@@ -29,7 +25,7 @@ const port = process.env.PORT || 5000;
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://shopmint-client.vercel.app",
+ 
 ];
 
 app.use(
