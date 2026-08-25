@@ -15,4 +15,4 @@ const Category = [
     { id: 12, label: "Mouse", value: "mouse" },
     { id: 13, label: "Clothing", value: "Clothing" },
 ]
-export default productCategory
+export default Category
