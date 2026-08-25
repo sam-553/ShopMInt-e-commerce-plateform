@@ -24,6 +24,7 @@ const port = process.env.PORT || 5000;
 
 
 const allowedOrigins = [
+  "https://shopmint-client.vercel.app/",
   "http://localhost:5173",
  
 ];
