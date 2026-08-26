@@ -14,7 +14,14 @@ const sendToken = (user, statusCode, res) => {
     path: "/",
   };
 
-  res
+  console.log("SETTING COOKIE:", {
+    secure: options.secure,
+    sameSite: options.sameSite,
+    path: options.path,
+    expires: options.expires,
+  });
+
+  return res
     .status(statusCode)
     .cookie("token", token, options)
     .json({
