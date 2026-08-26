@@ -8,6 +8,16 @@ const api = axios.create({
   withCredentials: true,
 });
 
+api.interceptors.request.use((config) => {
+  console.log({
+    url: config.url,
+    baseURL: config.baseURL,
+    withCredentials: config.withCredentials,
+  });
+
+  return config;
+});
+
 const extractError = (error, fallback) => {
   return (
     error.response?.data?.message ||
