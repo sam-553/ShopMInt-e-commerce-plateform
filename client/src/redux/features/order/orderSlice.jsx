@@ -1,124 +1,253 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import {
+  createSlice,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
 
+import { api } from "../user/userSlice";
 
-// Axios base config
-axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}`;
-axios.defaults.withCredentials = true;
+const getError = (
+  error,
+  fallback
+) =>
+  error.response?.data?.message ||
+  error.response?.data?.error ||
+  error.message ||
+  fallback;
 
-// ✅ Create Order Thunk
-export const createNewOrder = createAsyncThunk(
+// CREATE ORDER
+export const createNewOrder =
+  createAsyncThunk(
     "order/createOrder",
-    async (order, { rejectWithValue }) => {
-        try {
-            const response = await axios.post("/api/order/createOrder", order);
-            return response.data;
-        } catch (error) {
-            return rejectWithValue(
-                error.response?.data?.message || "Order creation failed"
-            );
-        }
-    }
-);
+    async (
+      order,
+      { rejectWithValue }
+    ) => {
+      try {
+        const response =
+          await api.post(
+            "/api/order/createOrder",
+            order
+          );
 
-// ✅ Fetch all my orders
-export const getAllMyOrders = createAsyncThunk(
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(
+          getError(
+            error,
+            "Order creation failed"
+          )
+        );
+      }
+    }
+  );
+
+// MY ORDERS
+export const getAllMyOrders =
+  createAsyncThunk(
     "order/getAllMyOrders",
-    async (_, { rejectWithValue }) => {
-        try {
-            const response = await axios.get("/api/order/allMyOrders");
-            return response.data;
-        } catch (error) {
-            return rejectWithValue(
-                error.response?.data?.message || "Failed to fetch all orders"
-            );
-        }
-    }
-);
+    async (
+      _,
+      { rejectWithValue }
+    ) => {
+      try {
+        const response =
+          await api.get(
+            "/api/order/allMyOrders"
+          );
 
-// ✅ Fetch single order
-export const getSingleOrder = createAsyncThunk(
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(
+          getError(
+            error,
+            "Failed to fetch orders"
+          )
+        );
+      }
+    }
+  );
+
+// SINGLE ORDER
+export const getSingleOrder =
+  createAsyncThunk(
     "order/getSingleOrder",
-    async (id, { rejectWithValue }) => {
-        try {
-            const response = await axios.get(`/api/order/getSingleOrder/${id}`);
-            return response.data;
-        } catch (error) {
-            return rejectWithValue(
-                error.response?.data?.message || "Failed to fetch order details"
-            );
-        }
+    async (
+      id,
+      { rejectWithValue }
+    ) => {
+      try {
+        const response =
+          await api.get(
+            `/api/order/getSingleOrder/${id}`
+          );
+
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(
+          getError(
+            error,
+            "Failed to fetch order"
+          )
+        );
+      }
     }
-);
+  );
 
-const orderSlice = createSlice({
+const orderSlice =
+  createSlice({
     name: "order",
+
     initialState: {
-        orders: [],
-        order: {},
-        loading: false,
-        error: null,
-        success: false,
+      orders: [],
+      order: {},
+      loading: false,
+      error: null,
+      success: false,
     },
+
     reducers: {
-        removeError: (state) => {
+      removeError: (
+        state
+      ) => {
+        state.error = null;
+      },
+
+      removeSuccess: (
+        state
+      ) => {
+        state.success = false;
+      },
+    },
+
+    extraReducers: (
+      builder
+    ) => {
+
+      // CREATE ORDER
+      builder
+        .addCase(
+          createNewOrder.pending,
+          (state) => {
+            state.loading = true;
             state.error = null;
-        },
-        removeSuccess: (state) => {
-            state.success = false;
-        },
+          }
+        )
+
+        .addCase(
+          createNewOrder.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.success =
+              action.payload
+                ?.success;
+
+            state.order =
+              action.payload
+                ?.order || {};
+          }
+        )
+
+        .addCase(
+          createNewOrder.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // ALL MY ORDERS
+      builder
+        .addCase(
+          getAllMyOrders.pending,
+          (state) => {
+            state.loading = true;
+            state.error = null;
+          }
+        )
+
+        .addCase(
+          getAllMyOrders.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+
+            state.success =
+              action.payload
+                ?.success;
+
+            state.orders =
+              action.payload
+                ?.orders || [];
+          }
+        )
+
+        .addCase(
+          getAllMyOrders.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // SINGLE ORDER
+      builder
+        .addCase(
+          getSingleOrder.pending,
+          (state) => {
+            state.loading = true;
+            state.error = null;
+          }
+        )
+
+        .addCase(
+          getSingleOrder.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+
+            state.success =
+              action.payload
+                ?.success;
+
+            state.order =
+              action.payload
+                ?.order || {};
+          }
+        )
+
+        .addCase(
+          getSingleOrder.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
     },
-    extraReducers: (builder) => {
-        // ✅ Create order
-        builder
-            .addCase(createNewOrder.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(createNewOrder.fulfilled, (state, action) => {
-                state.loading = false;
-                state.success = action.payload?.success;
-                state.order = action.payload?.order;
-            })
-            .addCase(createNewOrder.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload || "Order creation failed";
-            });
+  });
 
-        // ✅ Get all my orders
-        builder
-            .addCase(getAllMyOrders.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(getAllMyOrders.fulfilled, (state, action) => {
-                state.loading = false;
-                state.success = action.payload?.success;
-                state.orders = action.payload?.orders;
-            })
-            .addCase(getAllMyOrders.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload || "Failed to fetch orders";
-            });
+export const {
+  removeError,
+  removeSuccess,
+} =
+  orderSlice.actions;
 
-        // ✅ Get single order
-        builder
-            .addCase(getSingleOrder.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(getSingleOrder.fulfilled, (state, action) => {
-                state.loading = false;
-                state.success = action.payload?.success;
-                state.order = action.payload?.order;
-            })
-            .addCase(getSingleOrder.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload || "Failed to fetch order details";
-            });
-    },
-});
-
-// ✅ Export actions and reducer
-export const { removeError, removeSuccess } = orderSlice.actions;
 export default orderSlice.reducer;

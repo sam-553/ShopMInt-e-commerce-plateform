@@ -6,7 +6,8 @@ const sendToken = (user, statusCode, res) => {
 
   const options = {
     expires: new Date(
-      Date.now() + cookieExpireDays * 24 * 60 * 60 * 1000
+      Date.now() +
+        cookieExpireDays * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
     secure: true,
@@ -26,7 +27,12 @@ const sendToken = (user, statusCode, res) => {
     .cookie("token", token, options)
     .json({
       success: true,
+
+      // IMPORTANT
+      token,
+
       user,
+
       message:
         statusCode === 200
           ? "Login successful"

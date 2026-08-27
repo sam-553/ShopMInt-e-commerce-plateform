@@ -1,482 +1,1050 @@
+import {
+  createSlice,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
 
+import { api } from "../user/userSlice";
 
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+// --------------------------------
+// ERROR HELPER
+// --------------------------------
+const extractError = (
+  error,
+  fallback
+) => {
+  return (
+    error.response?.data?.message ||
+    error.response?.data?.error ||
+    error.message ||
+    fallback
+  );
+};
 
-// Axios config
-axios.defaults.baseURL = `${import.meta.env.VITE_BASE_URL}`;
-axios.defaults.withCredentials = true;
+// --------------------------------
+// ADMIN PRODUCTS
+// --------------------------------
+export const fetchAdminProducts =
+  createAsyncThunk(
+    "admin/fetchAdminProducts",
+    async (
+      _,
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.get(
+            "/api/product/getAdminProducts"
+          );
 
-
-
-
-// Thunk for fetching admin products
-export const fetchAdminProducts = createAsyncThunk(
-    'admin/fetchAdminProducts',
-    async (_, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.get('/api/product/getAdminProducts');
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue(extractError(error, "Failed to fetch products"));
-        }
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to fetch products"
+          )
+        );
+      }
     }
-);
-export const uploadProducts = createAsyncThunk(
-    'admin/uploadProducts',
-    async (productData, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.post('/api/product/addproduct', productData);
-            return data;
-        } catch (error) {
-            return rejectWithValue(extractError(error, "Failed to fetch products"));
-        }
-    }
-);
-// delete product
-export const deleteProduct = createAsyncThunk(
+  );
 
-    'admin/deleteProduct',
-    async (id, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.delete(`/api/product/deleteproduct/${id}`);
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue(extractError(error, "Failed to delete products"));
-        }
-    }
-);
-//update product
-export const updateProduct = createAsyncThunk(
+// --------------------------------
+// ADD PRODUCT
+// --------------------------------
+export const uploadProducts =
+  createAsyncThunk(
+    "admin/uploadProducts",
+    async (
+      productData,
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.post(
+            "/api/product/addproduct",
+            productData
+          );
 
-    'admin/updateProduct',
-    async ({ id, formData }, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.put(`/api/product/updateproduct/${id}`, formData);
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue(extractError(error, "Failed to update products"));
-        }
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to create product"
+          )
+        );
+      }
     }
-);
+  );
 
-// fetchAllUsers
-export const fetchAllUsers = createAsyncThunk(
-    'admin/fetchAllUsers',
-    async (_, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.get('/api/user/getUsersList');
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue(extractError(error, "Failed to fetch Users"));
-        }
+// --------------------------------
+// DELETE PRODUCT
+// --------------------------------
+export const deleteProduct =
+  createAsyncThunk(
+    "admin/deleteProduct",
+    async (
+      id,
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.delete(
+            `/api/product/deleteproduct/${id}`
+          );
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to delete product"
+          )
+        );
+      }
     }
-);
-// delete user
-export const deleteuser = createAsyncThunk(
+  );
 
-    'admin/deleteuser',
-    async (id, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.delete(`/api/user/deleteUser/${id}`);
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue(extractError(error, "Failed to delete user"));
-        }
+// --------------------------------
+// UPDATE PRODUCT
+// --------------------------------
+export const updateProduct =
+  createAsyncThunk(
+    "admin/updateProduct",
+    async (
+      { id, formData },
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.put(
+            `/api/product/updateproduct/${id}`,
+            formData
+          );
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to update product"
+          )
+        );
+      }
     }
-);
-// get single user
-export const getSingleUser = createAsyncThunk(
+  );
 
-    'admin/getSingleUser',
-    async (id, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.get(`/api/user/getSingleUser/${id}`);
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue(extractError(error, "Failed to fetch getSingleUser"));
-        }
+// --------------------------------
+// ALL USERS
+// --------------------------------
+export const fetchAllUsers =
+  createAsyncThunk(
+    "admin/fetchAllUsers",
+    async (
+      _,
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.get(
+            "/api/user/getUsersList"
+          );
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to fetch users"
+          )
+        );
+      }
     }
-);
+  );
 
-//update user
-export const updateUserRole = createAsyncThunk(
+// --------------------------------
+// DELETE USER
+// --------------------------------
+export const deleteuser =
+  createAsyncThunk(
+    "admin/deleteuser",
+    async (
+      id,
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.delete(
+            `/api/user/deleteUser/${id}`
+          );
 
-    'admin/updateUserRole',
-    async ({ id, formData }, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.put(`/api/user/updateUserRole/${id}`, formData);
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue(extractError(error, "Failed to update user"));
-        }
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to delete user"
+          )
+        );
+      }
     }
-);
+  );
 
-// fetch All order
-export const fetchAllOrders = createAsyncThunk(
-    'admin/fetchAllOrders',
-    async (_, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.get('/api/order/getAllOrders');
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue((error.response?.data?.message || error.message || "Failed to fetch order"));
-        }
-    }
-);
-//updateOrderStatus
-export const updateOrderStatus = createAsyncThunk(
-    'admin/updateOrderStatus',
-    async ({ orderId, status }, thunkAPI) => {
-        try {
-            const { data } = await axios.put(`/api/order/updateOrderStatus/${orderId}`, { status });
-            return data;
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error.response.data.message || 'Error updating order');
-        }
-    }
-);
+// --------------------------------
+// SINGLE USER
+// --------------------------------
+export const getSingleUser =
+  createAsyncThunk(
+    "admin/getSingleUser",
+    async (
+      id,
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.get(
+            `/api/user/getSingleUser/${id}`
+          );
 
-//delete orders
-export const deleteOrder = createAsyncThunk(
-    'admin/deleteOrder',
-    async (id, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.delete(`/api/order/deleteOrder/${id}`);
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue((error.response?.data?.message || error.message || "Failed to delete order"));
-        }
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to fetch user"
+          )
+        );
+      }
     }
-);
+  );
 
-// reviews
-export const fetchAllReviews = createAsyncThunk(
-    'admin/fetchAllReviews',
-    async (_, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.get('/api/product/getProductReviews');
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue((error.response?.data?.message || error.message || "Failed to fetch reviews"));
-        }
+// --------------------------------
+// UPDATE USER ROLE
+// --------------------------------
+export const updateUserRole =
+  createAsyncThunk(
+    "admin/updateUserRole",
+    async (
+      { id, formData },
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.put(
+            `/api/user/updateUserRole/${id}`,
+            formData
+          );
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to update user"
+          )
+        );
+      }
     }
-);
-export const deleteReviews = createAsyncThunk(
-    'admin/deleteReviews',
-    async ({ productId, reviewId }, { rejectWithValue }) => {
-        try {
-            await axios.delete(`/api/product/deleteReview/${productId}/${reviewId}`);
+  );
 
+// --------------------------------
+// ALL ORDERS
+// --------------------------------
+export const fetchAllOrders =
+  createAsyncThunk(
+    "admin/fetchAllOrders",
+    async (
+      _,
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.get(
+            "/api/order/getAllOrders"
+          );
 
-            return data; // should return { success, products }
-        } catch (error) {
-            return rejectWithValue((error.response?.data?.message || error.message || "Failed to fetch reviews"));
-        }
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to fetch orders"
+          )
+        );
+      }
     }
-);
-export const fetchSingleProductReviews = createAsyncThunk(
-    'admin/fetchSingleProductReviews',
-    async (productId, { rejectWithValue }) => {
-        try {
-            const { data } = await axios.get(`/api/product/getSingleProductReviews/${productId}`);
-            return data; // { success, reviews }
-        } catch (error) {
-            return rejectWithValue(error.response?.data?.message || error.message || "Failed to fetch product reviews");
-        }
-    }
-);
+  );
 
-const adminSlice = createSlice({
-    name: 'admin',
+// --------------------------------
+// UPDATE ORDER
+// --------------------------------
+export const updateOrderStatus =
+  createAsyncThunk(
+    "admin/updateOrderStatus",
+    async (
+      { orderId, status },
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.put(
+            `/api/order/updateOrderStatus/${orderId}`,
+            { status }
+          );
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Error updating order"
+          )
+        );
+      }
+    }
+  );
+
+// --------------------------------
+// DELETE ORDER
+// --------------------------------
+export const deleteOrder =
+  createAsyncThunk(
+    "admin/deleteOrder",
+    async (
+      id,
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.delete(
+            `/api/order/deleteOrder/${id}`
+          );
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to delete order"
+          )
+        );
+      }
+    }
+  );
+
+// --------------------------------
+// ALL REVIEWS
+// --------------------------------
+export const fetchAllReviews =
+  createAsyncThunk(
+    "admin/fetchAllReviews",
+    async (
+      _,
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.get(
+            "/api/product/getProductReviews"
+          );
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to fetch reviews"
+          )
+        );
+      }
+    }
+  );
+
+// --------------------------------
+// DELETE REVIEW
+// --------------------------------
+export const deleteReviews =
+  createAsyncThunk(
+    "admin/deleteReviews",
+    async (
+      {
+        productId,
+        reviewId,
+      },
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.delete(
+            `/api/product/deleteReview/${productId}/${reviewId}`
+          );
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to delete review"
+          )
+        );
+      }
+    }
+  );
+
+// --------------------------------
+// SINGLE PRODUCT REVIEWS
+// --------------------------------
+export const fetchSingleProductReviews =
+  createAsyncThunk(
+    "admin/fetchSingleProductReviews",
+    async (
+      productId,
+      { rejectWithValue }
+    ) => {
+      try {
+        const { data } =
+          await api.get(
+            `/api/product/getSingleProductReviews/${productId}`
+          );
+
+        return data;
+      } catch (error) {
+        return rejectWithValue(
+          extractError(
+            error,
+            "Failed to fetch reviews"
+          )
+        );
+      }
+    }
+  );
+
+// --------------------------------
+// SLICE
+// --------------------------------
+const adminSlice =
+  createSlice({
+    name: "admin",
+
     initialState: {
-        products: [],
-        users: [],
-        loading: false,
-        error: null,
-        success: false,
-        product: {},
-        user: {},
-        message: null,
-        orders: [],
-        order: {},
-        reviews: [],
-        review: {},
-        totalAmount: 0
+      products: [],
+      users: [],
+      loading: false,
+      error: null,
+      success: false,
+      product: {},
+      user: {},
+      message: null,
+      orders: [],
+      order: {},
+      reviews: [],
+      review: {},
+      totalAmount: 0,
     },
+
     reducers: {
-        removeError: (state) => {
-            state.error = null;
-        },
-        removeSuccess: (state) => {
-            state.success = false;
-        },
-        clearmessage: (state) => {
-            state.message = false;
-        },
+      removeError: (
+        state
+      ) => {
+        state.error = null;
+      },
+
+      removeSuccess: (
+        state
+      ) => {
+        state.success = false;
+      },
+
+      clearmessage: (
+        state
+      ) => {
+        state.message = null;
+      },
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchAdminProducts.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchAdminProducts.fulfilled, (state, action) => {
-                state.loading = false;
-                state.products = action.payload.products || [];
 
-            })
-            .addCase(fetchAdminProducts.rejected, (state, action) => {
-                state.loading = false;
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to fetch products';
-            });
+    extraReducers: (
+      builder
+    ) => {
 
-        //upload products
-        builder
-            .addCase(uploadProducts.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(uploadProducts.fulfilled, (state, action) => {
-                state.loading = false;
-                state.products.push(action.payload.product);
-
-
-                state.success = action.payload?.success || true;
-                state.error = null;
-            })
-            .addCase(uploadProducts.rejected, (state, action) => {
-                state.loading = false;
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to create products';
-            });
-        //update product
-        builder
-            .addCase(updateProduct.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(updateProduct.fulfilled, (state, action) => {
-                state.loading = false;
-                const updatedProduct = action.payload?.product;
-                if (updatedProduct && updatedProduct._id) {
-                    state.products = state.products.map((prod) =>
-                        prod._id === updatedProduct._id ? updatedProduct : prod
-                    );
-                }
-                state.success = action.payload?.success || true;
-                state.error = null;
-            })
-
-
-            .addCase(updateProduct.rejected, (state, action) => {
-                state.loading = false;
-
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to update products';
-            });
-
-
-
-
-
-
-        //delete products
-        builder.addCase(deleteProduct.pending, (state) => {
+      // PRODUCTS
+      builder
+        .addCase(
+          fetchAdminProducts.pending,
+          (state) => {
             state.loading = true;
             state.error = null;
-        })
-            .addCase(deleteProduct.fulfilled, (state, action) => {
-                state.loading = false;
-                const deletedId = action.payload.deletedProductId; // ensure backend sends this
-                state.products = state.products.filter(prod => prod._id !== deletedId);
-                state.success = true;
-            })
+          }
+        )
 
-            .addCase(deleteProduct.rejected, (state, action) => {
-                state.loading = false;
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to fetch products';
-            });
-        //  fetchAllUsers
-        builder
-            .addCase(fetchAllUsers.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchAllUsers.fulfilled, (state, action) => {
-                state.loading = false;
-                state.users = action.payload.users || [];
+        .addCase(
+          fetchAdminProducts.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
 
-            })
-            .addCase(fetchAllUsers.rejected, (state, action) => {
-                state.loading = false;
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to fetch Users';
-            });
-        //getSingleUser
-        builder
-            .addCase(getSingleUser.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(getSingleUser.fulfilled, (state, action) => {
-                state.loading = false;
-                state.user = action.payload.user || {};
+            state.products =
+              action.payload
+                ?.products || [];
+          }
+        )
 
-            })
-            .addCase(getSingleUser.rejected, (state, action) => {
-                state.loading = false;
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to fetch Users';
-            });
+        .addCase(
+          fetchAdminProducts.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
 
-        // delete user
-        builder.addCase(deleteuser.pending, (state) => {
+      // ADD PRODUCT
+      builder
+        .addCase(
+          uploadProducts.pending,
+          (state) => {
             state.loading = true;
             state.error = null;
-        })
-            .addCase(deleteuser.fulfilled, (state, action) => {
-                state.loading = false;
-                const deletedId = action.payload.deleteduserId; // ensure backend send this
-                state.users = state.users.filter(user => user._id !== deletedId);
-                state.success = true;
-            })
+          }
+        )
 
-            .addCase(deleteuser.rejected, (state, action) => {
-                state.loading = false;
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to fetch products';
-            });
+        .addCase(
+          uploadProducts.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
 
-        //updateUser
+            if (
+              action.payload?.product
+            ) {
+              state.products.push(
+                action.payload.product
+              );
+            }
 
-        builder
-            .addCase(updateUserRole.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(updateUserRole.fulfilled, (state, action) => {
-                state.loading = false;
-
-                state.success = action.payload?.success || true;
-                state.message = action.payload?.message || true;
-
-            })
-
-            .addCase(updateUserRole.rejected, (state, action) => {
-                state.loading = false;
-
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to update products';
-            });
-        //fetchAllOrders
-        // fetchAllOrders
-        builder
-            .addCase(fetchAllOrders.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-                state.totalAmount = 0; // optional reset
-            })
-            .addCase(fetchAllOrders.fulfilled, (state, action) => {
-                state.loading = false;
-                state.orders = action.payload.orders || [];
-                state.totalAmount = state.orders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
-            })
-            .addCase(fetchAllOrders.rejected, (state, action) => {
-                state.loading = false;
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to fetch orders';
-            });
-
-        //delete order
-        builder
-            .addCase(deleteOrder.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(deleteOrder.fulfilled, (state, action) => {
-                state.loading = false;
-                const deletedId = action.payload.deleteduserId; // ensure backend send this
-                state.orders = state.orders.filter(order => order._id !== deletedId);
-                state.success = true;
-
-            })
-            .addCase(deleteOrder.rejected, (state, action) => {
-                state.loading = false;
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to delete orders';
-            });
-        //updateOrderStatus
-        builder
-            .addCase(updateOrderStatus.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(updateOrderStatus.fulfilled, (state, action) => {
-                state.loading = false;
-
-
-                state.success = action.payload?.success || true;
-                state.order = action.payload?.order;
-                state.error = null;
-            })
-
-            .addCase(updateOrderStatus.rejected, (state, action) => {
-                state.loading = false;
-
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to update products';
-            });
-
-        //fetchAllReviews
-        builder
-            .addCase(fetchAllReviews.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchAllReviews.fulfilled, (state, action) => {
-                state.loading = false;
-
-
-                state.success = action.payload?.success || true;
-                state.reviews = action.payload?.reviews;
-                state.error = null;
-            })
-
-            .addCase(fetchAllReviews.rejected, (state, action) => {
-                state.loading = false;
-
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to update products';
-            });
-
-        //delete review
-        builder.addCase(deleteReviews.pending, (state) => {
-            state.loading = true;
+            state.success = true;
             state.error = null;
-        })
-            .addCase(deleteReviews.fulfilled, (state, action) => {
-                state.loading = false;
-                state.success = true;
-                const deletedId = action.payload.deletedReviewId; // Ensure backend sends this
-                state.reviews = state.reviews.filter(review => review._id !== deletedId);
-            })
-            .addCase(deleteReviews.rejected, (state, action) => {
-                state.loading = false;
-                state.error = typeof action.payload === 'string' ? action.payload : action.payload?.message || 'Failed to delete review';
-            })
+          }
+        )
 
-        builder
-            .addCase(fetchSingleProductReviews.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(fetchSingleProductReviews.fulfilled, (state, action) => {
-                state.loading = false;
-                state.success = action.payload?.success || true;
-                state.review = action.payload?.review;
-            })
-            .addCase(fetchSingleProductReviews.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload || "Failed to fetch product reviews";
-            });
+        .addCase(
+          uploadProducts.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
 
+      // DELETE PRODUCT
+      builder
+        .addCase(
+          deleteProduct.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
 
+        .addCase(
+          deleteProduct.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
 
+            const deletedId =
+              action.payload
+                ?.deletedProductId;
 
+            if (deletedId) {
+              state.products =
+                state.products.filter(
+                  (product) =>
+                    product._id !==
+                    deletedId
+                );
+            }
+
+            state.success = true;
+          }
+        )
+
+        .addCase(
+          deleteProduct.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // UPDATE PRODUCT
+      builder
+        .addCase(
+          updateProduct.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          updateProduct.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+
+            const updated =
+              action.payload
+                ?.product;
+
+            if (updated?._id) {
+              state.products =
+                state.products.map(
+                  (product) =>
+                    product._id ===
+                    updated._id
+                      ? updated
+                      : product
+                );
+            }
+
+            state.success = true;
+          }
+        )
+
+        .addCase(
+          updateProduct.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // USERS
+      builder
+        .addCase(
+          fetchAllUsers.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.users =
+              action.payload
+                ?.users || [];
+          }
+        )
+
+        .addCase(
+          fetchAllUsers.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          fetchAllUsers.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // SINGLE USER
+      builder
+        .addCase(
+          getSingleUser.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.user =
+              action.payload
+                ?.user || {};
+          }
+        )
+
+        .addCase(
+          getSingleUser.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          getSingleUser.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // DELETE USER
+      builder
+        .addCase(
+          deleteuser.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+
+            const deletedId =
+              action.payload
+                ?.deleteduserId;
+
+            if (deletedId) {
+              state.users =
+                state.users.filter(
+                  (user) =>
+                    user._id !==
+                    deletedId
+                );
+            }
+
+            state.success = true;
+          }
+        )
+
+        .addCase(
+          deleteuser.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          deleteuser.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // UPDATE ROLE
+      builder
+        .addCase(
+          updateUserRole.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.success = true;
+            state.message =
+              action.payload
+                ?.message || null;
+          }
+        )
+
+        .addCase(
+          updateUserRole.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          updateUserRole.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // ORDERS
+      builder
+        .addCase(
+          fetchAllOrders.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+
+            state.orders =
+              action.payload
+                ?.orders || [];
+
+            state.totalAmount =
+              state.orders.reduce(
+                (sum, order) =>
+                  sum +
+                  (order.totalPrice ||
+                    0),
+                0
+              );
+          }
+        )
+
+        .addCase(
+          fetchAllOrders.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          fetchAllOrders.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // UPDATE ORDER
+      builder
+        .addCase(
+          updateOrderStatus.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.success = true;
+            state.order =
+              action.payload?.order ||
+              {};
+          }
+        )
+
+        .addCase(
+          updateOrderStatus.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          updateOrderStatus.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // DELETE ORDER
+      builder
+        .addCase(
+          deleteOrder.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.success = true;
+
+            const deletedId =
+              action.payload
+                ?.deletedOrderId;
+
+            if (deletedId) {
+              state.orders =
+                state.orders.filter(
+                  (order) =>
+                    order._id !==
+                    deletedId
+                );
+            }
+          }
+        )
+
+        .addCase(
+          deleteOrder.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          deleteOrder.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // REVIEWS
+      builder
+        .addCase(
+          fetchAllReviews.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+
+            state.reviews =
+              action.payload
+                ?.reviews || [];
+
+            state.success =
+              Boolean(
+                action.payload?.success
+              );
+          }
+        )
+
+        .addCase(
+          fetchAllReviews.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          fetchAllReviews.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // DELETE REVIEW
+      builder
+        .addCase(
+          deleteReviews.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.success = true;
+
+            const deletedId =
+              action.payload
+                ?.deletedReviewId;
+
+            if (deletedId) {
+              state.reviews =
+                state.reviews.filter(
+                  (review) =>
+                    review._id !==
+                    deletedId
+                );
+            }
+          }
+        )
+
+        .addCase(
+          deleteReviews.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          deleteReviews.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
+
+      // SINGLE PRODUCT REVIEWS
+      builder
+        .addCase(
+          fetchSingleProductReviews.fulfilled,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+
+            state.review =
+              action.payload
+                ?.review ||
+              {};
+
+            state.success =
+              Boolean(
+                action.payload?.success
+              );
+          }
+        )
+
+        .addCase(
+          fetchSingleProductReviews.pending,
+          (state) => {
+            state.loading = true;
+          }
+        )
+
+        .addCase(
+          fetchSingleProductReviews.rejected,
+          (
+            state,
+            action
+          ) => {
+            state.loading = false;
+            state.error =
+              action.payload;
+          }
+        );
     },
-});
+  });
 
-export const { removeError, removeSuccess, clearmessage } = adminSlice.actions;
+export const {
+  removeError,
+  removeSuccess,
+  clearmessage,
+} =
+  adminSlice.actions;
+
 export default adminSlice.reducer;
