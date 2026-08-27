@@ -5,12 +5,7 @@ import User from "../model/usermodel.js";
 
 const verifyUserAuth = handleasyncError(async (req, res, next) => {
 
-  console.log("========== AUTH DEBUG ==========");
-  console.log("Origin:", req.headers.origin);
-  console.log("Cookie header:", req.headers.cookie);
-  console.log("Parsed cookies:", req.cookies);
-  console.log("Token:", req.cookies?.token);
-  console.log("================================");
+  
 
   const token = req.cookies?.token;
 

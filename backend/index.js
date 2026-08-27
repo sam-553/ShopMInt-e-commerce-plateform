@@ -18,31 +18,22 @@ import HandleErrorMiddleware from "./middlewear/error.js";
  connectDb();
 
 const app = express();
-app.use((req, res, next) => {
-  console.log("========== COOKIE DEBUG ==========");
-  console.log("Method:", req.method);
-  console.log("URL:", req.originalUrl);
-  console.log("Origin:", req.headers.origin);
-  console.log("Host:", req.headers.host);
-  console.log("Cookie:", req.headers.cookie);
-  console.log("=================================");
-  next();
-});
+
 
 const port = process.env.PORT || 5000;
 
 
 
 const allowedOrigins = [
-  "https://shopmint-frontend.vercel.app",
+  
   "http://localhost:5173",
-  "http://localhost:3000",
+  
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow Postman/server-to-server requests
+      
       if (!origin) {
         return callback(null, true);
       }
