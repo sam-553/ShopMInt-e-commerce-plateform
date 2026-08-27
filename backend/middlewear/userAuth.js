@@ -24,7 +24,7 @@ const verifyUserAuth = handleasyncError(async (req, res, next) => {
       process.env.JWT_SECRET_KEY
     );
 
-    console.log("Decoded JWT:", decodedData);
+
 
     req.user = await User.findById(decodedData.id);
 

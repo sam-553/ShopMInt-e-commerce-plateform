@@ -25,7 +25,7 @@ const port = process.env.PORT || 5000;
 
 
 const allowedOrigins = [
-  
+  "https://shop-m-int-e-commerce-plateform.vercel.app/",
   "http://localhost:5173",
   
 ];
