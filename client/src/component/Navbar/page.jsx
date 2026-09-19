@@ -23,7 +23,7 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,9 +59,10 @@ const Navbar = () => {
 
     if (!query) return;
 
-    navigate(`/products?keyword=${query}`);
+    navigate(`/products?keyword=${encodeURIComponent(query)}`);
     setSearchQuery('');
     setIsMenuOpen(false);
+    setIsSearchFocused(false);
   };
 
   const handleLogout = async () => {
@@ -98,6 +99,7 @@ const Navbar = () => {
 
       <nav className="fixed top-0 w-full bg-gray-100 dark:bg-gray-900 shadow-md z-[1000] text-gray-900 dark:text-white">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+
           {/* Logo */}
           <Link to="/">
             <span
@@ -115,7 +117,7 @@ const Navbar = () => {
                 <li key={to}>
                   <Link
                     to={to}
-                    className="hover:text-blue-600 dark:hover:text-blue-400"
+                    className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
                   >
                     {label}
                   </Link>
@@ -124,11 +126,75 @@ const Navbar = () => {
             </ul>
           </div>
 
+          {/* Desktop Interactive Search */}
+          <form
+            onSubmit={handleSearchSubmit}
+            className={`hidden md:flex items-center mr-4 transition-all duration-300 ${
+              isSearchFocused
+                ? 'w-[300px] lg:w-[350px]'
+                : 'w-[220px] lg:w-[280px]'
+            }`}
+          >
+            <div
+              className={`relative flex items-center w-full h-10 rounded-full border transition-all duration-300 ${
+                isSearchFocused
+                  ? 'bg-white dark:bg-gray-800 border-blue-500 shadow-[0_0_0_3px_rgba(59,130,246,0.15)]'
+                  : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 shadow-sm'
+              }`}
+            >
+              <SearchIcon
+                className={`ml-3 transition-all duration-300 ${
+                  isSearchFocused
+                    ? 'text-blue-600 scale-110'
+                    : 'text-gray-500 dark:text-gray-400'
+                }`}
+                fontSize="small"
+              />
+
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setIsSearchFocused(false)}
+                placeholder="Search products..."
+                className="bg-transparent text-sm text-gray-900 dark:text-white outline-none w-full px-3 placeholder:text-gray-400 dark:placeholder:text-gray-500"
+              />
+
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="mr-1 w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                >
+                  <CloseIcon
+                    fontSize="small"
+                    className="text-gray-500 dark:text-gray-400"
+                  />
+                </button>
+              )}
+
+              <button
+                type="submit"
+                disabled={!searchQuery.trim()}
+                className={`mr-1 w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200 ${
+                  searchQuery.trim()
+                    ? 'bg-blue-600 text-white hover:bg-blue-700 hover:scale-105 active:scale-95'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
+                }`}
+              >
+                <SearchIcon fontSize="small" />
+              </button>
+            </div>
+          </form>
+
           {/* Right Side */}
           <div className="flex items-center gap-2 md:gap-6">
+
             {/* Cart */}
             <Link to="/cartItem" className="relative">
-              <ShoppingCartIcon className="hover:text-blue-600 dark:hover:text-blue-400" />
+              <ShoppingCartIcon className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200" />
+
               <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs font-semibold w-5 h-5 rounded-full flex items-center justify-center">
                 {mounted && isAuthenticated ? cartItems.length : 0}
               </span>
@@ -139,7 +205,7 @@ const Navbar = () => {
               <div className="w-8 h-8 bg-gray-300 dark:bg-gray-700 rounded-full animate-pulse" />
             ) : !isAuthenticated ? (
               <Link to="/login">
-                <PersonAddIcon className="hover:text-blue-600 dark:hover:text-blue-400" />
+                <PersonAddIcon className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200" />
               </Link>
             ) : (
               <div ref={profileRef} className="relative">
@@ -198,6 +264,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden bg-gray-100 dark:bg-gray-800 px-6 py-4 space-y-4">
+
             {navLinks.map(({ label, to }) => (
               <Link
                 key={to}
@@ -209,19 +276,41 @@ const Navbar = () => {
               </Link>
             ))}
 
+            {/* Mobile Search */}
             <form
               onSubmit={handleSearchSubmit}
-              className="flex items-center gap-2 bg-white dark:bg-gray-700 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded shadow-sm"
+              className="flex items-center gap-2 bg-white dark:bg-gray-700 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-full shadow-sm focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-300"
             >
+              <SearchIcon className="text-gray-700 dark:text-gray-300" />
+
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search..."
+                placeholder="Search products..."
                 className="bg-transparent text-sm text-gray-900 dark:text-white outline-none w-full"
               />
-              <button type="submit">
-                <SearchIcon className="text-gray-700 dark:text-gray-300" />
+
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="flex items-center justify-center w-7 h-7 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
+                >
+                  <CloseIcon fontSize="small" />
+                </button>
+              )}
+
+              <button
+                type="submit"
+                disabled={!searchQuery.trim()}
+                className={`flex items-center justify-center w-8 h-8 rounded-full transition ${
+                  searchQuery.trim()
+                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'bg-gray-200 dark:bg-gray-600 text-gray-400'
+                }`}
+              >
+                <SearchIcon fontSize="small" />
               </button>
             </form>
           </div>
@@ -232,3 +321,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
