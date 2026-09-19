@@ -5,9 +5,7 @@ import {
 
 import { api } from "../user/userSlice";
 
-// --------------------------------
-// ERROR HELPER
-// --------------------------------
+
 const extractError = (
   error,
   fallback

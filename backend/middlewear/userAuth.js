@@ -4,10 +4,16 @@ import jwt from "jsonwebtoken";
 import User from "../model/usermodel.js";
 
 const verifyUserAuth = handleasyncError(async (req, res, next) => {
+  let token;
 
-  
-
-  const token = req.cookies?.token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer ")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies?.token) {
+    token = req.cookies.token;
+  }
 
   if (!token) {
     return next(
@@ -24,8 +30,6 @@ const verifyUserAuth = handleasyncError(async (req, res, next) => {
       process.env.JWT_SECRET_KEY
     );
 
-
-
     req.user = await User.findById(decodedData.id);
 
     if (!req.user) {
@@ -35,7 +39,6 @@ const verifyUserAuth = handleasyncError(async (req, res, next) => {
     }
 
     next();
-
   } catch (error) {
     console.error("JWT ERROR:", error);
 

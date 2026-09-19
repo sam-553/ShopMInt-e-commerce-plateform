@@ -8,17 +8,13 @@ import axios from "axios";
 const API =
   import.meta.env.VITE_BASE_URL;
 
-// --------------------------------
-// AXIOS INSTANCE
-// --------------------------------
+
 export const api = axios.create({
   baseURL: API,
   withCredentials: true,
 });
 
-// --------------------------------
-// ADD AUTHORIZATION TOKEN
-// --------------------------------
+
 api.interceptors.request.use(
   (config) => {
     const token =
