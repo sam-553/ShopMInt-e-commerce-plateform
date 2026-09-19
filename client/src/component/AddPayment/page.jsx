@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -41,14 +42,18 @@ const AddPayment = () => {
   const tax = subtotal * 0.18;
   const total = subtotal + shippingCharges + tax;
 
-  // IMPORTANT:
-  // Authentication is handled by the HTTP-only cookie.
-  // Do NOT depend on localStorage.getItem("token").
-  const authConfig = {
-    withCredentials: true,
-    headers: {
-      "Content-Type": "application/json",
-    },
+  const getAuthConfig = () => {
+    const token = localStorage.getItem("token");
+
+    return {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && {
+          Authorization: `Bearer ${token}`,
+        }),
+      },
+    };
   };
 
   const handleGoBack = () => {
@@ -63,7 +68,6 @@ const AddPayment = () => {
     try {
       setPaymentLoading(true);
 
-      // Check Redux user instead of localStorage token
       if (!user) {
         toast.error("Please login again to continue payment.");
         setPaymentLoading(false);
@@ -91,20 +95,10 @@ const AddPayment = () => {
         return;
       }
 
-      console.log("Starting payment...");
-      console.log("User:", user);
-      console.log("Amount:", Math.round(total));
-
-      // ------------------------------------------------
-      // 1. GET RAZORPAY KEY
-      // ------------------------------------------------
-
       const keyResponse = await axios.get(
         `${API_URL}/getKey`,
-        authConfig
+        getAuthConfig()
       );
-
-      console.log("Razorpay key response:", keyResponse.data);
 
       const razorpayKey =
         keyResponse.data?.key ||
@@ -117,21 +111,12 @@ const AddPayment = () => {
         );
       }
 
-      // ------------------------------------------------
-      // 2. CREATE RAZORPAY ORDER
-      // ------------------------------------------------
-
       const orderResponse = await axios.post(
         `${API_URL}/processPayment`,
         {
           amount: Math.round(total),
         },
-        authConfig
-      );
-
-      console.log(
-        "Razorpay order response:",
-        orderResponse.data
+        getAuthConfig()
       );
 
       const order =
@@ -152,10 +137,6 @@ const AddPayment = () => {
         );
       }
 
-      // ------------------------------------------------
-      // 3. CHECK RAZORPAY SDK
-      // ------------------------------------------------
-
       if (!window.Razorpay) {
         toast.error(
           "Razorpay SDK not loaded. Please refresh the page."
@@ -164,21 +145,12 @@ const AddPayment = () => {
         return;
       }
 
-      // ------------------------------------------------
-      // 4. RAZORPAY OPTIONS
-      // ------------------------------------------------
-
       const options = {
         key: razorpayKey,
-
         amount: order.amount,
-
         currency: order.currency || "INR",
-
         name: "ShopMint",
-
         description: "ShopMint Order Payment",
-
         order_id: razorpayOrderId,
 
         prefill: {
@@ -203,17 +175,8 @@ const AddPayment = () => {
           color: "#3399cc",
         },
 
-        // ------------------------------------------------
-        // 5. PAYMENT SUCCESS
-        // ------------------------------------------------
-
         handler: async function (response) {
           try {
-            console.log(
-              "Razorpay payment response:",
-              response
-            );
-
             const verificationResponse =
               await axios.post(
                 `${API_URL}/paymentVerification`,
@@ -227,13 +190,8 @@ const AddPayment = () => {
                   razorpay_signature:
                     response.razorpay_signature,
                 },
-                authConfig
+                getAuthConfig()
               );
-
-            console.log(
-              "Payment verification response:",
-              verificationResponse.data
-            );
 
             if (verificationResponse.data?.success) {
               toast.success("Payment successful!");
@@ -281,10 +239,6 @@ const AddPayment = () => {
           }
         },
 
-        // ------------------------------------------------
-        // 6. PAYMENT MODAL CLOSED
-        // ------------------------------------------------
-
         modal: {
           ondismiss: function () {
             setPaymentLoading(false);
@@ -293,28 +247,26 @@ const AddPayment = () => {
         },
       };
 
-      // ------------------------------------------------
-      // 7. OPEN RAZORPAY
-      // ------------------------------------------------
-
       const razorpay = new window.Razorpay(options);
 
-      razorpay.on("payment.failed", function (response) {
-        console.error(
-          "Razorpay payment failed:",
-          response.error
-        );
+      razorpay.on(
+        "payment.failed",
+        function (response) {
+          console.error(
+            "Razorpay payment failed:",
+            response.error
+          );
 
-        setPaymentLoading(false);
+          setPaymentLoading(false);
 
-        toast.error(
-          response.error?.description ||
-            "Payment could not be completed."
-        );
-      });
+          toast.error(
+            response.error?.description ||
+              "Payment could not be completed."
+          );
+        }
+      );
 
       razorpay.open();
-
     } catch (error) {
       console.error(
         "Payment processing error:",
@@ -330,9 +282,6 @@ const AddPayment = () => {
         error.response?.data?.error ||
         error.message ||
         "Payment processing failed.";
-
-      console.error("Payment status:", status);
-      console.error("Payment message:", message);
 
       if (status === 401) {
         toast.error(
@@ -371,9 +320,7 @@ const AddPayment = () => {
 
             <div className="flex justify-between">
               <span>Shipping Charges:</span>
-              <span>
-                ₹{shippingCharges.toFixed(2)}
-              </span>
+              <span>₹{shippingCharges.toFixed(2)}</span>
             </div>
 
             <div className="flex justify-between">
@@ -421,3 +368,4 @@ const AddPayment = () => {
 };
 
 export default AddPayment;
+
