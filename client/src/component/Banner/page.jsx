@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 
 const desktopBanner = [
@@ -7,7 +6,6 @@ const desktopBanner = [
   '/images/assest/banner/img3.jpg',
   '/images/assest/banner/img4.jpg',
   '/images/assest/banner/img5.webp',
-
 ];
 
 const mobileBanner = [
@@ -16,7 +14,6 @@ const mobileBanner = [
   '/images/assest/banner/img3_mobile.jpg',
   '/images/assest/banner/img4_mobile.jpg',
   '/images/assest/banner/img5_mobile.png',
-
 ];
 
 const Banner = () => {
@@ -32,8 +29,13 @@ const Banner = () => {
 
     handleResize();
     window.addEventListener('resize', handleResize);
+
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [isMobile]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,31 +46,39 @@ const Banner = () => {
   }, [banners]);
 
   return (
-    <div className="relative w-full mt-28 overflow-hidden rounded-md h-[450px] sm:h-[300px] max-sm:h-[200px]">
-      {/* Image Slider */}
+    <div className="relative w-full mt-18 overflow-hidden rounded-xl h-[450px] sm:h-[300px] max-sm:h-[200px] shadow-lg group">
+
       <div
         className="flex h-full transition-transform duration-1000 ease-in-out"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        style={{
+          transform: `translateX(-${currentIndex * 100}%)`,
+        }}
       >
         {banners.map((image, idx) => (
-          <div className="min-w-full h-full" key={idx}>
+          <div
+            className="min-w-full h-full overflow-hidden"
+            key={idx}
+          >
             <img
               src={image}
               alt={`Banner ${idx + 1}`}
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
             />
           </div>
         ))}
       </div>
 
-      {/* Dot Navigation */}
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 z-10 bg-black/20 backdrop-blur-sm px-3 py-2 rounded-full">
         {banners.map((_, idx) => (
           <button
             key={idx}
             onClick={() => setCurrentIndex(idx)}
-            className={`w-3 h-3 rounded-full transition-colors duration-300 ${currentIndex === idx ? 'bg-white' : 'bg-white/60'
-              }`}
+            aria-label={`Go to banner ${idx + 1}`}
+            className={`rounded-full transition-all duration-300 ${
+              currentIndex === idx
+                ? 'w-7 h-2 bg-white'
+                : 'w-2 h-2 bg-white/60 hover:bg-white hover:scale-125'
+            }`}
           />
         ))}
       </div>
